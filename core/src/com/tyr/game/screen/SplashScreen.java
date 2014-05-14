@@ -8,6 +8,7 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.tyr.game.Tyr;
+import com.tyr.game.accessor.AbstractAccessor;
 import com.tyr.game.accessor.SpriteAccessor;
 import com.tyr.game.screen.helper.DurationNode;
 import com.tyr.game.screen.helper.ScreenHelper;
@@ -90,7 +91,7 @@ public class SplashScreen extends AbstractScreen {
 
 		// Sets the initial alpha value of the sprite such that it is
 		// transparent.
-		Tween.set(splash, SpriteAccessor.ALPHA).target(ALPHA_TRANSPARENT)
+		Tween.set(splash, AbstractAccessor.ALPHA).target(ALPHA_TRANSPARENT)
 				.start(tweenManager);
 		// Fades the alpha of the sprite such that it is opaque. The duration
 		// must be in seconds.
@@ -107,7 +108,7 @@ public class SplashScreen extends AbstractScreen {
 				dispose();
 			}
 		};
-		Tween.to(splash, SpriteAccessor.ALPHA, fadeDurationSeconds)
+		Tween.to(splash, AbstractAccessor.ALPHA, fadeDurationSeconds)
 				.target(ALPHA_OPAQUE).repeatYoyo(1, displayDurationSeconds)
 				.setCallback(tweenCallback).start(tweenManager);
 	}

@@ -1,22 +1,16 @@
 package com.tyr.game.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.tyr.game.OptionPreferences;
-import com.tyr.game.Player;
 import com.tyr.game.Tyr;
 import com.tyr.game.screen.helper.ColorNode;
 import com.tyr.game.screen.helper.FontNode;
@@ -47,12 +41,6 @@ public class OptionsScreen extends AbstractScreen {
 		super();
 	}
 
-	@Override
-	public void show() {
-		super.show();
-		setupOptionsMenu();
-	}
-	
 	@Override
 	public void dispose() {
 		super.dispose();
@@ -157,6 +145,12 @@ public class OptionsScreen extends AbstractScreen {
 		});
 		table.add(backButton).spaceTop(200).colspan(3).width(300);
 		*/
+	}
+	
+	@Override
+	public void show() {
+		super.show();
+		setupOptionsMenu();
 	}	
 	
 }

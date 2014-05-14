@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.tyr.game.Tyr;
+import com.tyr.game.accessor.AbstractAccessor;
 import com.tyr.game.accessor.SpriteAccessor;
 import com.tyr.game.screen.helper.ScreenHelper;
 
@@ -33,6 +34,17 @@ public class EndScreen extends AbstractScreen {
 		splash.getTexture().dispose();
 	}
 	
+	@Override
+	public void render(float delta) {
+		super.render(delta);
+
+		tweenManager.update(delta);
+
+		batch.begin();
+		splash.draw(batch);
+		batch.end();
+	}
+	
 	@Override 
 	public void show() {
 		super.show();
@@ -46,7 +58,7 @@ public class EndScreen extends AbstractScreen {
 
 		// Sets the initial alpha value of the sprite such that it is
 		// transparent.
-		Tween.set(splash, SpriteAccessor.ALPHA).target(ALPHA_TRANSPARENT)
+		Tween.set(splash, AbstractAccessor.ALPHA).target(ALPHA_TRANSPARENT)
 				.start(tweenManager);
 		// Fades the alpha of the sprite such that it is opaque. The duration
 		// must be in seconds.
@@ -66,19 +78,8 @@ public class EndScreen extends AbstractScreen {
 				}
 			}
 		};
-		Tween.to(splash, SpriteAccessor.ALPHA, FADE_DURATION_SECONDS)
+		Tween.to(splash, AbstractAccessor.ALPHA, FADE_DURATION_SECONDS)
 				.target(ALPHA_OPAQUE).repeatYoyo(1, DISPLAY_DURATION_SECONDS)
 				.setCallback(tweenCallback).start(tweenManager);
-	}
-	
-	@Override
-	public void render(float delta) {
-		super.render(delta);
-
-		tweenManager.update(delta);
-
-		batch.begin();
-		splash.draw(batch);
-		batch.end();
 	}
 }

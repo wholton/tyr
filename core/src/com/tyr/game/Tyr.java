@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.tyr.game.audio.Audio;
 import com.tyr.game.screen.helper.ScreenHelper;
 
 public class Tyr extends Game {
@@ -49,14 +48,14 @@ public class Tyr extends Game {
 	
 	private static Tyr Instance = null;
 
-	public final Player player = Player.getInstance();
-
 	public static Tyr getInstance() {
 		if (Instance == null) {
 			Instance = new Tyr();
 		}
 		return Instance;
 	}
+
+	public final Player player = Player.getInstance();
 
 	/**
 	 * This class is singleton, and thus its constructor is private.

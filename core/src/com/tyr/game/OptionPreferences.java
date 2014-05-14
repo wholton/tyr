@@ -1,7 +1,5 @@
 package com.tyr.game;
 
-import com.badlogic.gdx.Gdx;
-
 public class OptionPreferences {
 
 	private float musicVolume;
@@ -32,47 +30,47 @@ public class OptionPreferences {
 		useFullscreen = true;
 	}
 	
+	public float getMasterVolume() {
+		return masterVolume;
+	}
 	public float getMusicVolume() {
 		return musicVolume;
-	}
-	public void setMusicVolume(float musicVolume) {
-		this.musicVolume = musicVolume;
 	}
 	public float getSoundVolume() {
 		return soundVolume;
 	}
-	public void setSoundVolume(float soundVolume) {
-		this.soundVolume = soundVolume;
-	}
-	public float getMasterVolume() {
-		return masterVolume;
-	}
 	public void setMasterVolume(float masterVolume) {
 		this.masterVolume = masterVolume;
 	}
-	public boolean useGL30() {
-		return useGL30;
+	public void setMusicVolume(float musicVolume) {
+		this.musicVolume = musicVolume;
+	}
+	public void setSoundVolume(float soundVolume) {
+		this.soundVolume = soundVolume;
+	}
+	public void setUseFullscreen(boolean useFullscreen) {
+		this.useFullscreen = useFullscreen;
 	}
 	public void setUseGL30(boolean useGL30) {
 		this.useGL30 = useGL30;
 	}
-	public boolean useVSync() {
-		return useVSync;
+	public void setUseResizable(boolean useResizable) {
+		this.useResizable = useResizable;
 	}
 	public void setUseVSync(boolean useVSync) {
 		this.useVSync = useVSync;
 	}
-	public boolean useResizable() {
-		return useResizable;
-	}
-	public void setUseResizable(boolean useResizable) {
-		this.useResizable = useResizable;
-	}
 	public boolean useFullscreen() {
 		return useFullscreen;
 	}
-	public void setUseFullscreen(boolean useFullscreen) {
-		this.useFullscreen = useFullscreen;
+	public boolean useGL30() {
+		return useGL30;
+	}
+	public boolean useResizable() {
+		return useResizable;
+	}
+	public boolean useVSync() {
+		return useVSync;
 	}
 	
 }

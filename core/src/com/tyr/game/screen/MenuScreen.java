@@ -16,12 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.sun.istack.internal.FinalArrayList;
 import com.tyr.game.OptionPreferences;
 import com.tyr.game.Tyr;
+import com.tyr.game.accessor.AbstractAccessor;
 import com.tyr.game.accessor.ActorAccessor;
-import com.tyr.game.accessor.SpriteAccessor;
-import com.tyr.game.audio.Audio;
 import com.tyr.game.screen.helper.LabelNode;
 import com.tyr.game.screen.helper.TextureNode;
 import com.tyr.game.screen.helper.TransitionButtonNode;
@@ -113,6 +111,14 @@ public class MenuScreen extends AbstractScreen {
 	}
 	
 	@Override
+	public void resize(final int width, final int height) {
+		super.resize(width, height);
+		stage.getViewport().update(width, height);
+		table.invalidateHierarchy();
+		table.setSize(width,  height);
+	}
+	
+	@Override
 	public void show() { 
 		super.show();
 		
@@ -152,28 +158,20 @@ public class MenuScreen extends AbstractScreen {
 		//TODO: should not be able to click buttons if they're not loaded in yet.
 		for(TextButton button : transitionButtons) {
 			timeline.push(Timeline.createSequence().beginSequence()
-					.push(Tween.set(button, ActorAccessor.ALPHA).target(ALPHA_TRANSPARENT)).end());
+					.push(Tween.set(button, AbstractAccessor.ALPHA).target(ALPHA_TRANSPARENT)).end());
 		} 
 
 		// Fade in the heading
 		timeline.push(Timeline.createSequence().beginSequence()
-				.push(Tween.from(heading, ActorAccessor.ALPHA, 10).target(ALPHA_TRANSPARENT)).end());
+				.push(Tween.from(heading, AbstractAccessor.ALPHA, 10).target(ALPHA_TRANSPARENT)).end());
 		//TODO use asset manager and load screen so I don't have to use this value
 		// Fade in the buttons 
 		for(TextButton button : transitionButtons) {
 			timeline.push(Timeline.createSequence().beginSequence()
-					.push(Tween.to(button, ActorAccessor.ALPHA, fadeDuration).target(ALPHA_OPAQUE)).end());
+					.push(Tween.to(button, AbstractAccessor.ALPHA, fadeDuration).target(ALPHA_OPAQUE)).end());
 		}
 		
 		//start the timeline
 		timeline.end().start(tweenManager);
-	}
-	
-	@Override
-	public void resize(final int width, final int height) {
-		super.resize(width, height);
-		stage.getViewport().update(width, height);
-		table.invalidateHierarchy();
-		table.setSize(width,  height);
 	}
 }
