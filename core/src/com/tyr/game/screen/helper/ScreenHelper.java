@@ -1,5 +1,8 @@
 package com.tyr.game.screen.helper;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -82,10 +85,10 @@ public class ScreenHelper {
 	public static Screen buildScreen(final String id) {
 		try {
 			final FileHandle screenXML = Gdx.files.internal("xml/screen.xml");
-			
 			final DocumentBuilder docBuilder = DocumentBuilderFactory
 					.newInstance().newDocumentBuilder();
-			final Document screenDoc = docBuilder.parse(screenXML.file());
+			// Note: MUST use .read() here, not .file(), as we link from the android assets!
+			final Document screenDoc = docBuilder.parse(screenXML.read());
 			screenDoc.getDocumentElement().normalize();
 			final NodeList screenElements = screenDoc
 					.getElementsByTagName("screen");
