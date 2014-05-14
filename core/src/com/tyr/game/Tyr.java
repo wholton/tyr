@@ -4,9 +4,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.tyr.game.audio.Audio;
 import com.tyr.game.screen.helper.ScreenHelper;
 
-public class tyr extends Game {
+public class Tyr extends Game {
 
 	/**
 	 * The name this object will be registered as inside the logger.
@@ -45,20 +46,22 @@ public class tyr extends Game {
 	private static final String DEFAULT_STARTING_SCREEN = "company";
 	private static final String SKIP_INTRO_STARTING_SCREEN = "main-menu";
 	private static boolean skipIntro;
-	/*
-	private static tyr Instance = null;
+	
+	private static Tyr Instance = null;
 
-	public static tyr getInstance() {
+	public final Player player = Player.getInstance();
+
+	public static Tyr getInstance() {
 		if (Instance == null) {
-			Instance = new tyr();
+			Instance = new Tyr();
 		}
 		return Instance;
-	}*/
+	}
 
 	/**
 	 * This class is singleton, and thus its constructor is private.
 	 */
-	public tyr() {
+	private Tyr() {
 		super();
 		skipIntro = false;
 	}
@@ -108,4 +111,5 @@ public class tyr extends Game {
 				+ screen.getClass().getSimpleName());
 		super.setScreen(screen);
 	}
+	
 }

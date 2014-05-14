@@ -5,10 +5,9 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.tyr.game.tyr;
+import com.tyr.game.Tyr;
 import com.tyr.game.accessor.SpriteAccessor;
 import com.tyr.game.screen.helper.DurationNode;
 import com.tyr.game.screen.helper.ScreenHelper;
@@ -22,9 +21,6 @@ import com.tyr.game.screen.helper.TextureNode;
  * 
  */
 public class SplashScreen extends AbstractScreen {
-
-	private static final float ALPHA_OPAQUE = 1;
-	private static final float ALPHA_TRANSPARENT = 0;
 
 	private final DurationNode durationNode;
 
@@ -107,7 +103,7 @@ public class SplashScreen extends AbstractScreen {
 			@Override
 			public void onEvent(int type, BaseTween<?> source) {
 				//tyr.getInstance().setScreen(ScreenHelper.buildScreen(transition));
-				((Game)Gdx.app.getApplicationListener()).setScreen(ScreenHelper.buildScreen(transition));
+				Tyr.getInstance().setScreen(ScreenHelper.buildScreen(transition));
 				dispose();
 			}
 		};

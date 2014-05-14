@@ -3,12 +3,10 @@ package com.tyr.game.screen;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.tyr.game.tyr;
+import com.tyr.game.Tyr;
 import com.tyr.game.screen.helper.ColorNode;
 import com.tyr.game.screen.helper.FontNode;
 import com.tyr.game.screen.helper.LabelNode;
@@ -36,10 +34,11 @@ public abstract class AbstractScreen implements Screen {
 	protected final String logName;
 	protected static final int SCREEN_WIDTH = Gdx.graphics.getWidth();
 	protected static final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
+	public static final float ALPHA_OPAQUE = 1;
+	public static final float ALPHA_TRANSPARENT = 0;
 	
-	protected OrthographicCamera camera;
 	protected SpriteBatch batch;
-
+	
 	public AbstractScreen() {
 		logName = this.getClass().getSimpleName();
 		Gdx.app.log(logName, "Constructor called");
@@ -84,8 +83,7 @@ public abstract class AbstractScreen implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				//tyr.getInstance().setScreen(ScreenHelper.buildScreen(node.getTransition()));
-				((Game)Gdx.app.getApplicationListener()).setScreen(ScreenHelper.buildScreen(node.getTransition()));
+				Tyr.getInstance().setScreen(ScreenHelper.buildScreen(node.getTransition()));
 				dispose();
 				return true;
 			}
@@ -107,7 +105,6 @@ public abstract class AbstractScreen implements Screen {
 	public void dispose() {
 		// TODO Auto-generated method stub
 		Gdx.app.log(logName, "Dispose called");
-		batch.dispose();
 	}
 	
 	@Override
@@ -143,8 +140,6 @@ public abstract class AbstractScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.app.log(logName, "Show called");
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
 		batch = new SpriteBatch();
 	}
 }

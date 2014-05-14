@@ -5,11 +5,10 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.tyr.game.tyr;
+import com.tyr.game.Tyr;
 import com.tyr.game.accessor.SpriteAccessor;
 import com.tyr.game.screen.helper.ScreenHelper;
 
@@ -17,10 +16,7 @@ public class EndScreen extends AbstractScreen {
 	//TODO: This class is VERY rough. Need to transition things into the XML and use the screen builder.
 	private final String transition;
 	private Sprite splash;
-	
-	private static final float ALPHA_OPAQUE = 1;
-	private static final float ALPHA_TRANSPARENT = 0;
-	
+
 	/**
 	 * Handles the splash fading effect.
 	 */
@@ -35,9 +31,6 @@ public class EndScreen extends AbstractScreen {
 	public void dispose() {
 		super.dispose();
 		splash.getTexture().dispose();
-		if(transition.equals("exit-application")) {
-			Gdx.app.exit();
-		}
 	}
 	
 	@Override 
@@ -66,9 +59,10 @@ public class EndScreen extends AbstractScreen {
 			@Override
 			public void onEvent(int type, BaseTween<?> source) {
 				dispose();
-				if(!transition.equals("exit-application")) {
-					//tyr.getInstance().setScreen(ScreenHelper.buildScreen(transition));
-					((Game)Gdx.app.getApplicationListener()).setScreen(ScreenHelper.buildScreen(transition));
+				if(transition.equals("exit-application")) {
+					Gdx.app.exit();
+				} else {
+					Tyr.getInstance().setScreen(ScreenHelper.buildScreen(transition));
 				}
 			}
 		};
