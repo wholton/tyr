@@ -8,26 +8,18 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.tyr.game.Tyr;
 import com.tyr.game.accessor.AbstractAccessor;
 import com.tyr.game.accessor.SpriteAccessor;
-import com.tyr.game.screen.helper.ScreenHelper;
 
 public class EndScreen extends AbstractScreen {
-	//TODO: This class is VERY rough. Need to transition things into the XML and use the screen builder.
-	private final String transition;
+
 	private Sprite splash;
 
 	/**
 	 * Handles the splash fading effect.
 	 */
 	private TweenManager tweenManager;
-	
-	public EndScreen(final String transition) {
-		super();
-		this.transition = transition;
-	}
-	
+
 	@Override
 	public void dispose() {
 		super.dispose();
@@ -65,17 +57,13 @@ public class EndScreen extends AbstractScreen {
 		// Also fades the alpha of the sprite such that it is transparent after
 		// a delay ("yoyos"). Duration and delay must be in seconds.
 		// This also sets a call back which will transition the screen
-		final float FADE_DURATION_SECONDS = 2000 / 1000;
-		final float DISPLAY_DURATION_SECONDS = 1000 / 1000;
+		final float FADE_DURATION_SECONDS = 1;
+		final float DISPLAY_DURATION_SECONDS = 1;
 		TweenCallback tweenCallback = new TweenCallback() {
 			@Override
 			public void onEvent(int type, BaseTween<?> source) {
 				dispose();
-				if(transition.equals("exit-application")) {
-					Gdx.app.exit();
-				} else {
-					Tyr.getInstance().setScreen(ScreenHelper.buildScreen(transition));
-				}
+				Gdx.app.exit();
 			}
 		};
 		Tween.to(splash, AbstractAccessor.ALPHA, FADE_DURATION_SECONDS)

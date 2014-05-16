@@ -6,13 +6,12 @@ import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.tyr.game.Tyr;
 import com.tyr.game.accessor.AbstractAccessor;
 import com.tyr.game.accessor.SpriteAccessor;
-import com.tyr.game.screen.helper.DurationNode;
-import com.tyr.game.screen.helper.ScreenHelper;
-import com.tyr.game.screen.helper.TextureNode;
 
 /**
  * Displays a full-screen texture for a particular duration of time before
@@ -23,8 +22,9 @@ import com.tyr.game.screen.helper.TextureNode;
  */
 public class SplashScreen extends AbstractScreen {
 
-	private final DurationNode durationNode;
-
+	private final float fadeTime;
+	private final float displayTime;
+	
 	/**
 	 * The total duration in milliseconds that the splash screen will be
 	 * displayed.
@@ -34,14 +34,14 @@ public class SplashScreen extends AbstractScreen {
 	/**
 	 * The next screen to be displayed.
 	 */
-	private final String transition;
+	private final Screen transition;
 
 	/**
 	 * The sprite representing the splash image which will be drawn to the
 	 * screen. Must dispose of the sprite's texture.
 	 */
 	private Sprite splash;
-	private final TextureNode textureNode;
+	private final String texturePath;
 	
 	/**
 	 * Handles the splash fading effect.
@@ -49,18 +49,19 @@ public class SplashScreen extends AbstractScreen {
 	private TweenManager tweenManager;
 	private static final int YOYO_COUNT = 2;
 
-	public SplashScreen(final DurationNode durationNode, final String transition, final TextureNode textureNode) {
+	public SplashScreen(final float fadeTime, final float displayTime, final Screen transition, final String texturePath) {
 		super();
-		this.durationNode = durationNode;
-		this.totalDuration = durationNode.getDisplay() + YOYO_COUNT * durationNode.getFade();
+		this.fadeTime = fadeTime;
+		this.displayTime = displayTime;
+		this.totalDuration = displayTime + YOYO_COUNT * fadeTime;
 		this.transition = transition;
-		this.textureNode = textureNode;
+		this.texturePath = texturePath;
 	}
 
 	@Override
 	public void dispose() {
-		super.dispose();
 		splash.getTexture().dispose();
+		super.dispose();
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public class SplashScreen extends AbstractScreen {
 		tweenManager = new TweenManager();
 		Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 
-		splash = new Sprite(buildTexture(textureNode));
+		splash = new Sprite(new Texture(Gdx.files.internal(texturePath)));
 		splash.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		// Sets the initial alpha value of the sprite such that it is
@@ -98,13 +99,12 @@ public class SplashScreen extends AbstractScreen {
 		// Also fades the alpha of the sprite such that it is transparent after
 		// a delay ("yoyos"). Duration and delay must be in seconds.
 		// This also sets a call back which will transition the screen
-		final float fadeDurationSeconds = durationNode.getFade() / 1000;
-		final float displayDurationSeconds = durationNode.getDisplay() / 1000;
+		final float fadeDurationSeconds = fadeTime / 1000;
+		final float displayDurationSeconds = displayTime / 1000;
 		TweenCallback tweenCallback = new TweenCallback() {
 			@Override
 			public void onEvent(int type, BaseTween<?> source) {
-				//tyr.getInstance().setScreen(ScreenHelper.buildScreen(transition));
-				Tyr.getInstance().setScreen(ScreenHelper.buildScreen(transition));
+				Tyr.getInstance().setScreen(transition);
 				dispose();
 			}
 		};

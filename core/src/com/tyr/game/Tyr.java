@@ -4,7 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.tyr.game.screen.helper.ScreenHelper;
+import com.tyr.game.screen.MenuScreen;
+import com.tyr.game.screen.SplashScreen;
 
 public class Tyr extends Game {
 
@@ -21,7 +22,7 @@ public class Tyr extends Game {
 	/**
 	 * The string representing the current version number of the game, which is
 	 * displayed with the game's name at the top of the application.
-	 * 
+	 * ```````
 	 * First digit is the overall version which changes based the level of
 	 * revision (major update or expansion) Second digit represents incremental
 	 * changes to a particular version (medium updates) Third digit represents
@@ -33,18 +34,26 @@ public class Tyr extends Game {
 	 * some bug fixes), 1.2.2.3 instead of 1.2-rc3 (release candidate), 1.2.3.0
 	 * instead of 1.2-r (commercial distribution), 1.2.3.5 instead of 1.2-r5
 	 * (commercial distribution with many bug fixes)
+	 * 
+	 * PLAN:
+	 * 
+	 * 1. Project setup, screen support for: splash screen, main menu, option screen. Video preferences and sound support. 
+	 * Save and load preferences. 
+	 * 
+	 * 2. Concrete game screen. Loading and saving data for new game vs continue. 
+	 * 
+	 * 3. Game levels...
+	 * 
+	 * PROGRESS:
+	 * 
+	 * Version 0. Update 1. Beta. Minor Completion (Main Menu has different load settings based on
+	 * whether the intro was on or not - possibly fix with asset manager), comments are lacking, option screen
+	 * UI doesn't look great), option screen maybe could use more options (definitely once controls are added)).
+	 * 
 	 */
-	// Version 0, unreleased. Working on update 0 (screen support). Currently in
-	// alpha (developing, untested, needs java docs).
-	// Half-way done: Splash and Menu screen support developed, currently have 
-	// two splashes and a main menu. Options and game screens to go.
-	public static final String VERSION = "0.0.0.5";
+	public static final String VERSION = "0.0.2.1";
 
 	private static final FPSLogger FPS_LOGGER = new FPSLogger();
-	
-	private static final String DEFAULT_STARTING_SCREEN = "company";
-	private static final String SKIP_INTRO_STARTING_SCREEN = "main-menu";
-	private static boolean skipIntro;
 	
 	private static Tyr Instance = null;
 
@@ -55,33 +64,32 @@ public class Tyr extends Game {
 		return Instance;
 	}
 
-	public final Player player = Player.getInstance();
-
 	/**
 	 * This class is singleton, and thus its constructor is private.
 	 */
 	private Tyr() {
 		super();
-		skipIntro = false;
 	}
 
 	@Override
 	public void create() {
 		Gdx.app.log(LOG_NAME, "Creating");
-		final String STARTING_SCREEN;
-		if(skipIntro) {
-			STARTING_SCREEN = SKIP_INTRO_STARTING_SCREEN;
+		
+		if(GamePreferences.getInstance().useIntro()) {
+			final SplashScreen trailer = new SplashScreen(2000, 2000, new MenuScreen(), "texture/trailer-splash1.png");
+			final SplashScreen company = new SplashScreen(2000, 2000, trailer, "texture/company-splash1.png");
+			setScreen(company);
 		} else {
-			STARTING_SCREEN = DEFAULT_STARTING_SCREEN;
+			setScreen(new MenuScreen());
 		}
-			
-		setScreen(ScreenHelper.buildScreen(STARTING_SCREEN));
+
 		// TODO: Load game data.
 	}
 
 	@Override
 	public void dispose() {
 		Gdx.app.log(LOG_NAME, "Disposing");
+		//GamePreferences.getInstance().saveData();
 		super.dispose();
 		// TODO: Save game data.
 	}

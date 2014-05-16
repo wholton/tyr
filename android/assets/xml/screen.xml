@@ -142,6 +142,65 @@
     
     <screen id="options">
         <type>options</type>
+        <heading>
+            <text>Options</text>
+       		<font>
+       		    <!-- Currently GRAY and OPAQUE -->
+	            <color>
+	                <r>160</r>
+	                <g>160</g>
+	                <b>160</b>
+	                <a>1</a>
+				</color>
+	            <size>80</size>
+	            <name>CRAYON__.TTF</name>
+	        </font>
+        </heading>
+        <background-texture>
+	        <name>options-background</name>
+	        <count>1</count>
+	        <type>.png</type> 
+        </background-texture>
+        <slider-list>
+            <slider id = "master-volume">
+		        <label>
+		            <text>Master Volume</text>
+		       		<font>
+		       		    <!-- Currently GRAY and OPAQUE -->
+			            <color>
+			                <r>0</r>
+			                <g>0</g>
+			                <b>0</b>
+			                <a>1</a>
+						</color>
+			            <size>40</size>
+			            <name>CRAYON__.TTF</name>
+			        </font>
+		        </label>
+		        <minimum>0</minimum>
+		        <maximum>100</maximum>
+		        <increment>1</increment>
+		        <verticle>false</verticle>
+            </slider>
+            
+        </slider-list>
+        <checkbox-list>
+            <checkbox id = "gl30">
+                <text>Use GL30</text>
+            </checkbox>
+            <checkbox id = "fullscreen">
+                <text>Fullscreen</text>
+            </checkbox>
+            <checkbox id = "resizable">
+                <text>Resizable</text>
+            </checkbox>
+            <checkbox id = "vsync">
+                <text>Use VSync</text>
+            </checkbox>
+            <checkbox id = "skip-intro">
+                <text>Skip Intro</text>
+            </checkbox>
+        </checkbox-list>
     </screen>
     
     <screen id = "ending">

@@ -17,6 +17,9 @@ public class SpriteAccessor extends AbstractAccessor implements TweenAccessor<Sp
 			returnValues[0] = target.getColor().g;
 			returnValues[0] = target.getColor().b;
 			return 3;
+		case Y:
+			returnValues[0] = target.getY();
+			return 1;
 		default:
 			throw new RuntimeException(ERROR_MESSAGE_TWEEN_TYPE);
 		}
