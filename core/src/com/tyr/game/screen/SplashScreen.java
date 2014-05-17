@@ -24,7 +24,7 @@ public class SplashScreen extends AbstractScreen {
 
 	private final float fadeTime;
 	private final float displayTime;
-	
+
 	/**
 	 * The total duration in milliseconds that the splash screen will be
 	 * displayed.
@@ -42,14 +42,17 @@ public class SplashScreen extends AbstractScreen {
 	 */
 	private Sprite splash;
 	private final String texturePath;
-	
+
 	/**
 	 * Handles the splash fading effect.
 	 */
 	private TweenManager tweenManager;
 	private static final int YOYO_COUNT = 2;
+	
+	private boolean disposed;
 
-	public SplashScreen(final float fadeTime, final float displayTime, final Screen transition, final String texturePath) {
+	public SplashScreen(final float fadeTime, final float displayTime,
+			final Screen transition, final String texturePath) {
 		super();
 		this.fadeTime = fadeTime;
 		this.displayTime = displayTime;
@@ -66,22 +69,27 @@ public class SplashScreen extends AbstractScreen {
 
 	@Override
 	public void render(float delta) {
-			super.render(delta);
-	
-			tweenManager.update(delta);
-	
+		super.render(delta);
+		
+		tweenManager.update(delta);
+		
+		if(!disposed) {
 			batch.begin();
 			splash.draw(batch);
 			batch.end();
+		}
 	}
 
 	@Override
 	public void show() {
 		super.show();
-		final float totalDurationSeconds = totalDuration / 1000;
-		Gdx.app.log(logName, "Transition in "
-				+ totalDurationSeconds + " seconds");
 		
+		disposed = false;
+		
+		final float totalDurationSeconds = totalDuration / 1000;
+		Gdx.app.log(logName, "Transition in " + totalDurationSeconds
+				+ " seconds");
+
 		// Registers TYR's SpriteAccessor class to handle the Sprite tweening
 		// effects.
 		tweenManager = new TweenManager();
@@ -105,7 +113,7 @@ public class SplashScreen extends AbstractScreen {
 			@Override
 			public void onEvent(int type, BaseTween<?> source) {
 				Tyr.getInstance().setScreen(transition);
-				dispose();
+				disposed = true;
 			}
 		};
 		Tween.to(splash, AbstractAccessor.ALPHA, fadeDurationSeconds)

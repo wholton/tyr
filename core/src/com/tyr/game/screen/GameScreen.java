@@ -13,8 +13,7 @@ public class GameScreen extends AbstractScreen {
 
 	public GameScreen() {
 		batch = new SpriteBatch();
-		textureAtlas = new TextureAtlas(
-				Gdx.files.internal("texture/frog.pack"));
+		textureAtlas = new TextureAtlas(Gdx.files.internal("texture/frog.pack"));
 		animation = new Animation(1 / 10f, textureAtlas.getRegions());
 	}
 

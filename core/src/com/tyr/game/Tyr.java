@@ -3,6 +3,7 @@ package com.tyr.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.tyr.game.screen.MenuScreen;
 import com.tyr.game.screen.SplashScreen;
@@ -17,12 +18,11 @@ public class Tyr extends Game {
 	/**
 	 * The string to be displayed at the top of the application
 	 */
-	public static final String NAME = "\"Thank you, Robutcus.\"";
+	public static final String NAME = "Thank you, Robutcus.";
 
 	/**
 	 * The string representing the current version number of the game, which is
-	 * displayed with the game's name at the top of the application.
-	 * ```````
+	 * displayed with the game's name at the top of the application. ```````
 	 * First digit is the overall version which changes based the level of
 	 * revision (major update or expansion) Second digit represents incremental
 	 * changes to a particular version (medium updates) Third digit represents
@@ -35,25 +35,19 @@ public class Tyr extends Game {
 	 * instead of 1.2-r (commercial distribution), 1.2.3.5 instead of 1.2-r5
 	 * (commercial distribution with many bug fixes)
 	 * 
-	 * PLAN:
 	 * 
-	 * 1. Project setup, screen support for: splash screen, main menu, option screen. Video preferences and sound support. 
-	 * Save and load preferences. 
-	 * 
-	 * 2. Concrete game screen. Loading and saving data for new game vs continue. 
-	 * 
-	 * 3. Game levels...
-	 * 
-	 * PROGRESS:
-	 * 
-	 * Version 0. Update 1. Beta. Minor Completion (Main Menu has different load settings based on
-	 * whether the intro was on or not - possibly fix with asset manager), comments are lacking, option screen
-	 * UI doesn't look great), option screen maybe could use more options (definitely once controls are added)).
+	 * We may also want to move the styles, font, etc. into a JSON.
 	 * 
 	 */
-	public static final String VERSION = "0.0.2.1";
+	public static final String VERSION = "0.0.0.7";
 
 	private static final FPSLogger FPS_LOGGER = new FPSLogger();
+
+	/**
+	 * Represents music that will play despite screens switching.
+	 */
+	private static Music music;
+	private static String musicPath;
 	
 	private static Tyr Instance = null;
 
@@ -74,13 +68,15 @@ public class Tyr extends Game {
 	@Override
 	public void create() {
 		Gdx.app.log(LOG_NAME, "Creating");
-		
-		if(GamePreferences.getInstance().useIntro()) {
-			final SplashScreen trailer = new SplashScreen(2000, 2000, new MenuScreen(), "texture/trailer-splash1.png");
-			final SplashScreen company = new SplashScreen(2000, 2000, trailer, "texture/company-splash1.png");
-			setScreen(company);
-		} else {
+
+		if (GamePreferences.getInstance().useSkipIntro()) {
 			setScreen(new MenuScreen());
+		} else {
+			final SplashScreen trailer = new SplashScreen(2000, 2000,
+					new MenuScreen(), "texture/trailer-splash1.png");
+			final SplashScreen company = new SplashScreen(2000, 2000, trailer,
+					"texture/company-splash1.png");
+			setScreen(company);
 		}
 
 		// TODO: Load game data.
@@ -89,9 +85,35 @@ public class Tyr extends Game {
 	@Override
 	public void dispose() {
 		Gdx.app.log(LOG_NAME, "Disposing");
-		//GamePreferences.getInstance().saveData();
+		if(music != null) 
+			music.dispose();
+		
 		super.dispose();
 		// TODO: Save game data.
+	}
+
+	/**
+	 * Plays music that will continue between screens.
+	 */
+	@SuppressWarnings("static-access")
+	public void playMusic(final String musicPath, boolean looping) {
+		if(music != null) {
+			if(musicPath.equals(Tyr.musicPath)) {
+				// if we're already playing this track, just update it.
+				final GamePreferences preferences = GamePreferences.getInstance();
+				music.setVolume(preferences.getMasterVolume() * preferences.getMusicVolume());
+				music.setLooping(looping);
+				return;
+			}
+			// if we're playing a different track, dispose of current and switch.
+			music.dispose();
+		}
+		Tyr.musicPath = musicPath;
+		music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
+		final GamePreferences preferences = GamePreferences.getInstance();
+		music.setVolume(preferences.getMasterVolume() * preferences.getMusicVolume());
+		music.play();
+		music.setLooping(looping);
 	}
 
 	@Override
@@ -111,12 +133,22 @@ public class Tyr extends Game {
 		Gdx.app.log(LOG_NAME, "Resuming");
 		super.resume();
 	}
-
+	
 	@Override
 	public void setScreen(Screen screen) {
 		Gdx.app.log(LOG_NAME, "Setting screen: "
 				+ screen.getClass().getSimpleName());
 		super.setScreen(screen);
 	}
-	
+
+	/**
+	 * If music is being played through the Tyr instance, this method will stop it.
+	 */
+	public void stopMusic() {
+		if(music != null && music.isPlaying()) {
+			music.stop();
+			music.dispose();
+			music = null;
+		}
+	}
 }

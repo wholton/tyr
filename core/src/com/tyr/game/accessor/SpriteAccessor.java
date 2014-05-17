@@ -4,11 +4,12 @@ import aurelienribon.tweenengine.TweenAccessor;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class SpriteAccessor extends AbstractAccessor implements TweenAccessor<Sprite> {
+public class SpriteAccessor extends AbstractAccessor implements
+		TweenAccessor<Sprite> {
 
 	@Override
 	public int getValues(Sprite target, int tweenType, float[] returnValues) {
-		switch(tweenType) {
+		switch (tweenType) {
 		case ALPHA:
 			returnValues[0] = target.getColor().a;
 			return 1;
@@ -33,7 +34,8 @@ public class SpriteAccessor extends AbstractAccessor implements TweenAccessor<Sp
 					target.getColor().b, newValues[0]);
 			break;
 		case RGB:
-			target.setColor(newValues[0], newValues[1], newValues[3], target.getColor().a);
+			target.setColor(newValues[0], newValues[1], newValues[3],
+					target.getColor().a);
 			break;
 		default:
 			throw new RuntimeException(ERROR_MESSAGE_TWEEN_TYPE);

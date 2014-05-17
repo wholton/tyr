@@ -13,39 +13,53 @@ import com.tyr.game.accessor.SpriteAccessor;
 
 public class EndScreen extends AbstractScreen {
 
+	/**
+	 * The image to be splashed at the end of the game.
+	 */
 	private Sprite splash;
+	
+	/**
+	 * The path to the image to be splashed at the end of the game.
+	 */
+	protected static final String TEXTURE_PATH = "texture/end-splash.png";
 
 	/**
 	 * Handles the splash fading effect.
 	 */
 	private TweenManager tweenManager;
+	
+	private boolean disposed;
 
 	@Override
 	public void dispose() {
-		super.dispose();
 		splash.getTexture().dispose();
+		super.dispose();
 	}
-	
+
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-
+		
 		tweenManager.update(delta);
-
-		batch.begin();
-		splash.draw(batch);
-		batch.end();
+		
+		if(!disposed) {
+			batch.begin();
+			splash.draw(batch);
+			batch.end();
+		}
 	}
-	
-	@Override 
+
+	@Override
 	public void show() {
 		super.show();
-		//TODO: Render credits.
+		
+		disposed = false;
+		
+		// TODO: Render credits.
 		tweenManager = new TweenManager();
 		Tween.registerAccessor(Sprite.class, new SpriteAccessor());
-		
-		Texture texture = new Texture(Gdx.files.internal("texture/end-splash.png"));
-		splash = new Sprite(texture);
+
+		splash = new Sprite(new Texture(Gdx.files.internal(TEXTURE_PATH)));
 		splash.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		// Sets the initial alpha value of the sprite such that it is
@@ -62,7 +76,7 @@ public class EndScreen extends AbstractScreen {
 		TweenCallback tweenCallback = new TweenCallback() {
 			@Override
 			public void onEvent(int type, BaseTween<?> source) {
-				dispose();
+				disposed = true;
 				Gdx.app.exit();
 			}
 		};
