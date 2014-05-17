@@ -1,11 +1,9 @@
 package com.tyr.game;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Preferences;
+import com.tyr.game.audio.AudioHelper;
 
 public class GamePreferences {
 
@@ -20,19 +18,13 @@ public class GamePreferences {
 	private float masterVolume;
 	private static final String MASTER_VOLUME_PREFERENCES_NAME = "MASTERVOLUME";
 
-	private boolean useGL30;
-	private static final String USE_GL30_PREFERENCES_NAME = "USEGL30";
+	private boolean vsync;
+	private static final String USE_VSYNC_PREFERENCES_NAME = "VSYNC";
 
-	private boolean useVSync;
-	private static final String USE_VSYNC_PREFERENCES_NAME = "USEVSYNC";
+	private boolean windowed;
+	private static final String USE_FULLSCREEN_PREFERENCES_NAME = "WINDOWED";
 
-	private boolean useResizable;
-	private static final String USE_RESIZABLE_PREFERENCES_NAME = "USERESIZABLE";
-
-	private boolean useFullscreen;
-	private static final String USE_FULLSCREEN_PREFERENCES_NAME = "USEFULLSCREEN";
-
-	private boolean useSkipIntro;
+	private boolean skipIntro;
 	private static final String USE_INTRO_PREFERENCES_NAME = "SKIPINTRO";
 
 	private static GamePreferences Instance;
@@ -48,6 +40,18 @@ public class GamePreferences {
 		loadData();
 	}
 
+	private void applyEffects() {
+		// Apply audio effects
+		AudioHelper.setVolume(getMusicVolume() * getMasterVolume());
+		// Apply video effects
+		final Graphics graphics = Gdx.graphics;
+		// Apply vsync effect
+		graphics.setVSync(vsync);
+		// Apply windowed effect
+		graphics.setDisplayMode(graphics.getWidth(), graphics.getHeight(),
+				windowed);
+	}
+
 	public float getMasterVolume() {
 		return masterVolume;
 	}
@@ -60,54 +64,46 @@ public class GamePreferences {
 		return soundVolume;
 	}
 
+	public boolean isSkipIntro() {
+		return skipIntro;
+	}
+
+	public boolean isVSync() {
+		return vsync;
+	}
+
+	public boolean isWindowed() {
+		return windowed;
+
+	}
+
 	public void loadData() {
 		Preferences preferences = Gdx.app.getPreferences(PREFERENCES_NAME);
 
 		masterVolume = preferences.getFloat(MASTER_VOLUME_PREFERENCES_NAME, 1);
 		soundVolume = preferences.getFloat(SOUND_VOLUME_PREFERENCES_NAME, 1);
 		musicVolume = preferences.getFloat(MUSIC_VOLUME_PREFERENCES_NAME, 1);
-		useGL30 = preferences.getBoolean(USE_GL30_PREFERENCES_NAME, true);
-		useVSync = preferences.getBoolean(USE_VSYNC_PREFERENCES_NAME, false);
-		useResizable = preferences.getBoolean(USE_RESIZABLE_PREFERENCES_NAME,
-				false);
-		useFullscreen = preferences.getBoolean(USE_FULLSCREEN_PREFERENCES_NAME,
-				true);
-		useSkipIntro = preferences.getBoolean(USE_INTRO_PREFERENCES_NAME, true);
+		vsync = preferences.getBoolean(USE_VSYNC_PREFERENCES_NAME, false);
+		windowed = preferences
+				.getBoolean(USE_FULLSCREEN_PREFERENCES_NAME, true);
+		skipIntro = preferences.getBoolean(USE_INTRO_PREFERENCES_NAME, true);
+
+		applyEffects();
 	}
 
 	public void saveData() {
-
-		com.badlogic.gdx.Preferences prefs = Gdx.app
-				.getPreferences(PREFERENCES_NAME);
+		Preferences prefs = Gdx.app.getPreferences(PREFERENCES_NAME);
 
 		prefs.putFloat(MASTER_VOLUME_PREFERENCES_NAME, masterVolume);
 		prefs.putFloat(MUSIC_VOLUME_PREFERENCES_NAME, musicVolume);
 		prefs.putFloat(SOUND_VOLUME_PREFERENCES_NAME, soundVolume);
-		prefs.putBoolean(USE_GL30_PREFERENCES_NAME, useGL30);
-		prefs.putBoolean(USE_VSYNC_PREFERENCES_NAME, useVSync);
-		prefs.putBoolean(USE_RESIZABLE_PREFERENCES_NAME, useResizable);
-		prefs.putBoolean(USE_FULLSCREEN_PREFERENCES_NAME, useFullscreen);
-		prefs.putBoolean(USE_INTRO_PREFERENCES_NAME, useSkipIntro);
+		prefs.putBoolean(USE_VSYNC_PREFERENCES_NAME, vsync);
+		prefs.putBoolean(USE_FULLSCREEN_PREFERENCES_NAME, windowed);
+		prefs.putBoolean(USE_INTRO_PREFERENCES_NAME, skipIntro);
 
 		prefs.flush();
 
-		// This is for the pre-app configuation file.
-		try {
-			// TODO: May want to switch over to XML to make it easier to expand
-			// this.
-			// Also if users want to change their own prefs files, it's more
-			// readable.
-			BufferedWriter writer = new BufferedWriter(new FileWriter(
-					"Tyr.Preferences"));
-			writer.write(String.valueOf(useGL30) + "\n");
-			writer.write(String.valueOf(useVSync) + "\n");
-			writer.write(String.valueOf(useFullscreen) + "\n");
-			writer.write(String.valueOf(useResizable));
-			writer.close();
-		} catch (IOException exception) {
-			exception.printStackTrace();
-		}
-
+		applyEffects();
 	}
 
 	public void setMasterVolume(float masterVolume) {
@@ -118,48 +114,19 @@ public class GamePreferences {
 		this.musicVolume = musicVolume;
 	}
 
+	public void setSkipIntro(boolean skipIntro) {
+		this.skipIntro = skipIntro;
+	}
+
 	public void setSoundVolume(float soundVolume) {
 		this.soundVolume = soundVolume;
 	}
 
-	public void setUseFullscreen(boolean useFullscreen) {
-		this.useFullscreen = useFullscreen;
+	public void setVSync(boolean vsync) {
+		this.vsync = vsync;
 	}
 
-	public void setUseGL30(boolean useGL30) {
-		this.useGL30 = useGL30;
+	public void setWindowed(boolean windowed) {
+		this.windowed = windowed;
 	}
-
-	public void setUseSkipIntro(boolean useSkipIntro) {
-		this.useSkipIntro = useSkipIntro;
-	}
-
-	public void setUseResizable(boolean useResizable) {
-		this.useResizable = useResizable;
-	}
-
-	public void setUseVSync(boolean useVSync) {
-		this.useVSync = useVSync;
-	}
-
-	public boolean useFullscreen() {
-		return useFullscreen;
-	}
-
-	public boolean useGL30() {
-		return useGL30;
-	}
-
-	public boolean useSkipIntro() {
-		return useSkipIntro;
-	}
-
-	public boolean useResizable() {
-		return useResizable;
-	}
-
-	public boolean useVSync() {
-		return useVSync;
-	}
-
 }

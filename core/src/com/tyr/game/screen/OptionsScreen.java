@@ -168,71 +168,43 @@ public class OptionsScreen extends AbstractScreen {
 		table.add(musicVolumeSlider).spaceBottom(OPTION_SPACE);
 		table.row();
 
-		// Setup GL30 option
-		table.add(new Label("Use GL30", optionLabelStyle))
-				.spaceBottom(OPTION_SPACE).spaceRight(OPTION_SPACE);
-		final CheckBox gl30CheckBox = new CheckBox("", skin);
-		gl30CheckBox.setChecked(gamePreferences.useGL30());
-		gl30CheckBox.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				gamePreferences.setUseGL30(gl30CheckBox.isChecked());
-			}
-		});
-		table.add(gl30CheckBox).spaceBottom(OPTION_SPACE);
-		table.row();
-
 		// Setup fullscreen option
 		table.add(new Label("Fullscreen", optionLabelStyle))
 				.spaceBottom(OPTION_SPACE).spaceRight(OPTION_SPACE);
 		final CheckBox fullscreenCheckBox = new CheckBox("", skin);
-		fullscreenCheckBox.setChecked(gamePreferences.useFullscreen());
+		fullscreenCheckBox.setChecked(gamePreferences.isWindowed());
 		fullscreenCheckBox.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				gamePreferences.setUseFullscreen(fullscreenCheckBox.isChecked());
+				gamePreferences.setWindowed(fullscreenCheckBox.isChecked());
 			}
 		});
 		table.add(fullscreenCheckBox).spaceBottom(OPTION_SPACE);
 		table.row();
 
-		// Setup resizable option
-		table.add(new Label("Resizable", optionLabelStyle))
-				.spaceBottom(OPTION_SPACE).spaceRight(OPTION_SPACE);
-		final CheckBox resizableCheckBox = new CheckBox("", skin);
-		resizableCheckBox.setChecked(gamePreferences.useResizable());
-		resizableCheckBox.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				gamePreferences.setUseResizable(resizableCheckBox.isChecked());
-			}
-		});
-		table.add(resizableCheckBox).spaceBottom(OPTION_SPACE);
-		table.row();
-
-		// Setup vsync
+		// Setup vsync option
 		table.add(new Label("VSync", optionLabelStyle))
 				.spaceBottom(OPTION_SPACE).spaceRight(OPTION_SPACE);
 		final CheckBox vsyncCheckBox = new CheckBox("", skin);
-		vsyncCheckBox.setChecked(gamePreferences.useVSync());
+		vsyncCheckBox.setChecked(gamePreferences.isVSync());
 		vsyncCheckBox.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				gamePreferences.setUseVSync(vsyncCheckBox.isChecked());
+				gamePreferences.setVSync(vsyncCheckBox.isChecked());
 			}
 		});
 		table.add(vsyncCheckBox).spaceBottom(OPTION_SPACE);
 		table.row();
-		
+
 		// Setup intro option
 		table.add(new Label("Skip Intro", optionLabelStyle))
 				.spaceBottom(TITLE_SPACE).spaceRight(OPTION_SPACE);
 		final CheckBox introCheckBox = new CheckBox("", skin);
-		introCheckBox.setChecked(gamePreferences.useSkipIntro());
+		introCheckBox.setChecked(gamePreferences.isSkipIntro());
 		introCheckBox.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				gamePreferences.setUseSkipIntro(introCheckBox.isChecked());
+				gamePreferences.setSkipIntro(introCheckBox.isChecked());
 			}
 		});
 		table.add(introCheckBox).spaceBottom(TITLE_SPACE);

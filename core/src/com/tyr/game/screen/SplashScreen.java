@@ -48,7 +48,7 @@ public class SplashScreen extends AbstractScreen {
 	 */
 	private TweenManager tweenManager;
 	private static final int YOYO_COUNT = 2;
-	
+
 	private boolean disposed;
 
 	public SplashScreen(final float fadeTime, final float displayTime,
@@ -70,10 +70,10 @@ public class SplashScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		
+
 		tweenManager.update(delta);
-		
-		if(!disposed) {
+
+		if (!disposed) {
 			batch.begin();
 			splash.draw(batch);
 			batch.end();
@@ -83,9 +83,9 @@ public class SplashScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		super.show();
-		
+
 		disposed = false;
-		
+
 		final float totalDurationSeconds = totalDuration / 1000;
 		Gdx.app.log(logName, "Transition in " + totalDurationSeconds
 				+ " seconds");

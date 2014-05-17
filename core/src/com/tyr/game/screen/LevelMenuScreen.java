@@ -6,15 +6,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
 public class LevelMenuScreen extends AbstractScreen {
 
@@ -27,7 +26,7 @@ public class LevelMenuScreen extends AbstractScreen {
 	 * The spacing between the options.
 	 */
 	protected final float OPTION_SPACE = 20;
-	
+
 	protected Stage stage;
 	protected Table table;
 	protected List<String> list;
@@ -42,18 +41,28 @@ public class LevelMenuScreen extends AbstractScreen {
 	protected static final int HEADING_FONT_SIZE = 80;
 	protected static final int BUTTON_FONT_SIZE = 60;
 	protected static final String FONT_PATH = "font/CRAYON__.TTF";
-	
+
+	@Override
+	public void dispose() {
+		super.dispose();
+	}
+
+	@Override
+	public void render(float delta) {
+		super.render(delta);
+	}
+
 	@Override
 	public void show() {
 		super.show();
-		
+
 		// Setup the stage
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
-		
+
 		// Setup the table
 		table = new Table();
-		
+
 		// Setup skin
 		skin = new Skin(Gdx.files.internal(SKIN_PATH));
 
@@ -79,26 +88,16 @@ public class LevelMenuScreen extends AbstractScreen {
 		buttonStyle.font = buttonFont;
 		final ListStyle listStyle = new ListStyle();
 		listStyle.font = optionFont;
-		
+
 		list = new List<String>(listStyle);
-		
+
 		scrollPane = new ScrollPane(list);
-		
+
 		final TextButton playButton = new TextButton("Play", buttonStyle);
 		playButton.padLeft(OPTION_SPACE);
-		
+
 		final TextButton backButton = new TextButton("Back", buttonStyle);
-		
+
 	}
-	
-	@Override 
-	public void render(float delta) {
-		super.render(delta);
-	}
-	
-	@Override
-	public void dispose() {
-		super.dispose();
-	}
-	
+
 }

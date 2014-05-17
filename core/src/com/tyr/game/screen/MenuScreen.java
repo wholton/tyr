@@ -24,10 +24,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.tyr.game.GamePreferences;
 import com.tyr.game.Tyr;
 import com.tyr.game.accessor.AbstractAccessor;
 import com.tyr.game.accessor.ActorAccessor;
+import com.tyr.game.audio.AudioHelper;
 
 /**
  * Allows the user to pick between multiple options.
@@ -63,15 +63,15 @@ public class MenuScreen extends AbstractScreen {
 	 * The image that will fill the background. This must be disposed of.
 	 */
 	protected Sprite background;
-	
+
 	/**
 	 * The path to the image that will fill the background.
 	 */
 	protected static final String BACKGROUND_TEXTURE_PATH = "texture/main-menu-background1.png";
 
 	/**
-	 * The path the music track that will play. This will continue despite screen switches.
-	 * To stop the track call "Tyr.getInstance().stopMusic()". 
+	 * The path the music track that will play. This will continue despite
+	 * screen switches. To stop the track call "Tyr.getInstance().stopMusic()".
 	 */
 	protected static final String MUSIC_PATH = "audio/track1.mp3";
 
@@ -79,22 +79,22 @@ public class MenuScreen extends AbstractScreen {
 	 * The font used by the heading.
 	 */
 	protected BitmapFont headingFont;
-	
+
 	/**
 	 * The font used by the buttons.
 	 */
 	protected BitmapFont buttonFont;
-	
+
 	/**
 	 * The size of the heading font.
 	 */
 	protected static final int HEADING_FONT_SIZE = 80;
-	
+
 	/**
 	 * The size of the button font.
 	 */
 	protected static final int BUTTON_FONT_SIZE = 40;
-	
+
 	/**
 	 * The path to the font used by the heading and buttons.
 	 */
@@ -104,17 +104,17 @@ public class MenuScreen extends AbstractScreen {
 	 * The button that will take the player to a new game.
 	 */
 	protected TextButton newGameButton;
-	
+
 	/**
 	 * The button that will take the player to a previous game.
 	 */
 	protected TextButton continueButton;
-	
+
 	/**
 	 * The button that will take the player to the options screen.
 	 */
 	protected TextButton optionsButton;
-	
+
 	/**
 	 * The button that will exit the application.
 	 */
@@ -124,25 +124,26 @@ public class MenuScreen extends AbstractScreen {
 	 * This manager controls transition effects.
 	 */
 	protected TweenManager tweenManager;
-	
+
 	/**
 	 * The time it takes for the transitions to complete.
 	 */
 	protected final float fadeTime = .75f;
-	
+
 	protected boolean disposed;
 
 	/**
 	 * Disables all buttons
 	 * 
-	 * @param bool	whether the buttons should be disabled or not
+	 * @param bool
+	 *            whether the buttons should be disabled or not
 	 */
 	protected void disableGameButtons(boolean bool) {
-		//newGameButton
-		//continueButton
-		//optionsButton
-		//exitButton
-		//TODO: Currently this does not work.
+		// newGameButton
+		// continueButton
+		// optionsButton
+		// exitButton
+		// TODO: Currently this does not work.
 	}
 
 	@Override
@@ -159,12 +160,12 @@ public class MenuScreen extends AbstractScreen {
 		super.render(delta);
 
 		tweenManager.update(delta);
-		
-		if(!disposed) {
+
+		if (!disposed) {
 			batch.begin();
 			background.draw(batch);
 			batch.end();
-	
+
 			stage.act(delta);
 			stage.draw();
 		}
@@ -183,9 +184,9 @@ public class MenuScreen extends AbstractScreen {
 		super.show();
 
 		disposed = false;
-		
+
 		// Setup music
-		Tyr.getInstance().playMusic(MUSIC_PATH, true);
+		AudioHelper.playMusic(MUSIC_PATH, true, false);
 
 		// Setup background texture
 		background = new Sprite(new Texture(
@@ -220,8 +221,7 @@ public class MenuScreen extends AbstractScreen {
 		style.font = buttonFont;
 
 		// Setup heading
-		final Label heading = new Label(Tyr.NAME,
-				headingLabelStyle);
+		final Label heading = new Label(Tyr.NAME, headingLabelStyle);
 		table.add(heading).spaceBottom(TITLE_SPACE);
 		table.row();
 
@@ -231,9 +231,8 @@ public class MenuScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				Tyr tyr = Tyr.getInstance();
-				tyr.setScreen(new GameScreen());
-				tyr.stopMusic();
+				Tyr.getInstance().setScreen(new GameScreen());
+				AudioHelper.stopMusic();
 				disposed = true;
 				return true;
 			}
@@ -247,9 +246,8 @@ public class MenuScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				Tyr tyr = Tyr.getInstance();
-				tyr.setScreen(new GameScreen());
-				tyr.stopMusic();
+				Tyr.getInstance().setScreen(new GameScreen());
+				AudioHelper.stopMusic();
 				disposed = true;
 				return true;
 			}
@@ -277,9 +275,8 @@ public class MenuScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				Tyr tyr = Tyr.getInstance();
-				tyr.setScreen(new EndScreen());
-				tyr.stopMusic();
+				Tyr.getInstance().setScreen(new EndScreen());
+				AudioHelper.stopMusic();
 				disposed = true;
 				return true;
 			}
@@ -317,16 +314,16 @@ public class MenuScreen extends AbstractScreen {
 						ALPHA_TRANSPARENT))
 				.push(Tween.set(exitButton, AbstractAccessor.ALPHA).target(
 						ALPHA_TRANSPARENT))
-				.push(Tween.from(heading, AbstractAccessor.ALPHA,
-						fadeTime).target(ALPHA_TRANSPARENT))
-				.push(Tween.to(newGameButton, AbstractAccessor.ALPHA,
-						fadeTime).target(ALPHA_OPAQUE))
-				.push(Tween.to(continueButton, AbstractAccessor.ALPHA,
-						fadeTime).target(ALPHA_OPAQUE))
-				.push(Tween.to(optionsButton, AbstractAccessor.ALPHA,
-						fadeTime).target(ALPHA_OPAQUE))
+				.push(Tween.from(heading, AbstractAccessor.ALPHA, fadeTime)
+						.target(ALPHA_TRANSPARENT))
+				.push(Tween.to(newGameButton, AbstractAccessor.ALPHA, fadeTime)
+						.target(ALPHA_OPAQUE))
 				.push(Tween
-						.to(exitButton, AbstractAccessor.ALPHA, fadeTime)
+						.to(continueButton, AbstractAccessor.ALPHA, fadeTime)
+						.target(ALPHA_OPAQUE))
+				.push(Tween.to(optionsButton, AbstractAccessor.ALPHA, fadeTime)
+						.target(ALPHA_OPAQUE))
+				.push(Tween.to(exitButton, AbstractAccessor.ALPHA, fadeTime)
 						.target(ALPHA_OPAQUE)).end().setCallback(tweenCallback)
 				.start(tweenManager);
 	}

@@ -17,7 +17,7 @@ public class EndScreen extends AbstractScreen {
 	 * The image to be splashed at the end of the game.
 	 */
 	private Sprite splash;
-	
+
 	/**
 	 * The path to the image to be splashed at the end of the game.
 	 */
@@ -27,7 +27,7 @@ public class EndScreen extends AbstractScreen {
 	 * Handles the splash fading effect.
 	 */
 	private TweenManager tweenManager;
-	
+
 	private boolean disposed;
 
 	@Override
@@ -39,10 +39,10 @@ public class EndScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		
+
 		tweenManager.update(delta);
-		
-		if(!disposed) {
+
+		if (!disposed) {
 			batch.begin();
 			splash.draw(batch);
 			batch.end();
@@ -52,9 +52,9 @@ public class EndScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		super.show();
-		
+
 		disposed = false;
-		
+
 		// TODO: Render credits.
 		tweenManager = new TweenManager();
 		Tween.registerAccessor(Sprite.class, new SpriteAccessor());
