@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		config.title = Tyr.NAME + " - v" + Tyr.VERSION;
 		config.width = 1920;
 		config.height = 1080;
+		//config.resizable = false;
 		//config.addIcon(path, fileType);
 		new LwjglApplication(Tyr.getInstance(), config); 
 	}

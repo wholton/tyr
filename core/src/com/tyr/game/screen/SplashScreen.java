@@ -7,8 +7,10 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.tyr.game.AssetHelper;
 import com.tyr.game.Tyr;
 import com.tyr.game.accessor.AbstractAccessor;
 import com.tyr.game.accessor.SpriteAccessor;
@@ -26,12 +28,6 @@ public class SplashScreen extends AbstractScreen {
 	private final float displayTime;
 
 	/**
-	 * The total duration in milliseconds that the splash screen will be
-	 * displayed.
-	 */
-	private final float totalDuration;
-
-	/**
 	 * The next screen to be displayed.
 	 */
 	private final Screen transition;
@@ -41,83 +37,74 @@ public class SplashScreen extends AbstractScreen {
 	 * screen. Must dispose of the sprite's texture.
 	 */
 	private Sprite splash;
-	private final String texturePath;
+	private final AssetDescriptor<Texture> textureDescriptor;
 
 	/**
 	 * Handles the splash fading effect.
 	 */
 	private TweenManager tweenManager;
-	private static final int YOYO_COUNT = 2;
-
-	private boolean disposed;
 
 	public SplashScreen(final float fadeTime, final float displayTime,
-			final Screen transition, final String texturePath) {
+			final Screen transition,
+			final AssetDescriptor<Texture> textureDescriptor) {
 		super();
 		this.fadeTime = fadeTime;
 		this.displayTime = displayTime;
-		this.totalDuration = displayTime + YOYO_COUNT * fadeTime;
 		this.transition = transition;
-		this.texturePath = texturePath;
-	}
-
-	@Override
-	public void dispose() {
-		splash.getTexture().dispose();
-		super.dispose();
+		this.textureDescriptor = textureDescriptor;
 	}
 
 	@Override
 	public void render(float delta) {
 		super.render(delta);
 
-		tweenManager.update(delta);
+		batch.begin();
+		splash.draw(batch);
+		batch.end();
 
-		if (!disposed) {
-			batch.begin();
-			splash.draw(batch);
-			batch.end();
-		}
+		tweenManager.update(delta);
 	}
 
 	@Override
 	public void show() {
 		super.show();
 
-		disposed = false;
-
-		final float totalDurationSeconds = totalDuration / 1000;
-		Gdx.app.log(logName, "Transition in " + totalDurationSeconds
+		// 2 is the number of times the effect will happen.
+		Gdx.app.log(logName, "Transition in " + displayTime + 2 * fadeTime
 				+ " seconds");
+
+		splash = new Sprite(AssetHelper.MANAGER.get(textureDescriptor));
+		splash.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		// Registers TYR's SpriteAccessor class to handle the Sprite tweening
 		// effects.
 		tweenManager = new TweenManager();
 		Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 
-		splash = new Sprite(new Texture(Gdx.files.internal(texturePath)));
-		splash.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
 		// Sets the initial alpha value of the sprite such that it is
 		// transparent.
 		Tween.set(splash, AbstractAccessor.ALPHA).target(ALPHA_TRANSPARENT)
 				.start(tweenManager);
+
 		// Fades the alpha of the sprite such that it is opaque. The duration
 		// must be in seconds.
 		// Also fades the alpha of the sprite such that it is transparent after
 		// a delay ("yoyos"). Duration and delay must be in seconds.
 		// This also sets a call back which will transition the screen
-		final float fadeDurationSeconds = fadeTime / 1000;
-		final float displayDurationSeconds = displayTime / 1000;
 		TweenCallback tweenCallback = new TweenCallback() {
 			@Override
 			public void onEvent(int type, BaseTween<?> source) {
 				Tyr.getInstance().setScreen(transition);
-				disposed = true;
 			}
 		};
-		Tween.to(splash, AbstractAccessor.ALPHA, fadeDurationSeconds)
-				.target(ALPHA_OPAQUE).repeatYoyo(1, displayDurationSeconds)
-				.setCallback(tweenCallback).start(tweenManager);
+
+		Tween.to(splash, AbstractAccessor.ALPHA, fadeTime).target(ALPHA_OPAQUE)
+				.repeatYoyo(1, displayTime).setCallback(tweenCallback)
+				.start(tweenManager);
+
+		// This is to get rid of the flicker caused by drawing with the batch
+		// then
+		// updating the tween in render.
+		tweenManager.update(Float.MIN_VALUE);
 	}
 }

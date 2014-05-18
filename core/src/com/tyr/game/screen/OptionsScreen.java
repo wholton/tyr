@@ -2,7 +2,6 @@ package com.tyr.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -22,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.tyr.game.AssetHelper;
 import com.tyr.game.GamePreferences;
 import com.tyr.game.Tyr;
 
@@ -30,37 +30,33 @@ public class OptionsScreen extends AbstractScreen {
 	/**
 	 * The spacing between the heading the options.
 	 */
-	protected final float TITLE_SPACE = 60;
+	protected final float TITLE_SPACE = 64;
 
 	/**
 	 * The spacing between the options.
 	 */
-	protected final float OPTION_SPACE = 20;
+	protected final float OPTION_SPACE = 16;
 
 	private Stage stage;
 	private Table table;
 
 	private Sprite background;
-	private static final String BACKGROUND_TEXTURE_PATH = "texture/options-background1.png";
 
 	private BitmapFont optionFont;
 	private BitmapFont headingFont;
 	private BitmapFont buttonFont;
-	private static final int OPTION_FONT_SIZE = 30;
-	private static final int HEADING_FONT_SIZE = 80;
-	private static final int BUTTON_FONT_SIZE = 60;
+	private static final int OPTION_FONT_SIZE = 32;
+	private static final int HEADING_FONT_SIZE = 64;
+	private static final int BUTTON_FONT_SIZE = 64;
 	private static final String FONT_PATH = "font/CRAYON__.TTF";
 
 	private Skin skin;
-	private static final String SKIN_PATH = "skin/uiskin.json";
 
 	@Override
 	public void dispose() {
 		optionFont.dispose();
 		headingFont.dispose();
 		stage.dispose();
-		background.getTexture().dispose();
-		skin.dispose();
 		super.dispose();
 	}
 
@@ -87,15 +83,15 @@ public class OptionsScreen extends AbstractScreen {
 		Gdx.input.setInputProcessor(stage);
 
 		// Setup background sprite
-		background = new Sprite(new Texture(
-				Gdx.files.internal(BACKGROUND_TEXTURE_PATH)));
+		background = new Sprite(
+				AssetHelper.MANAGER.get(AssetHelper.OPTIONS_BACKGROUND1));
 
 		// Setup table to align items
 		table = new Table();
 		table.setFillParent(true);
 
 		// Setup skin
-		skin = new Skin(Gdx.files.internal(SKIN_PATH));
+		skin = AssetHelper.MANAGER.get(AssetHelper.SKIN);
 
 		// Setup fonts
 		final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(

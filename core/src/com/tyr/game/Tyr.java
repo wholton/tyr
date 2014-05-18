@@ -3,8 +3,6 @@ package com.tyr.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.FPSLogger;
-import com.tyr.game.audio.AudioHelper;
 import com.tyr.game.screen.MenuScreen;
 import com.tyr.game.screen.SplashScreen;
 
@@ -41,7 +39,7 @@ public class Tyr extends Game {
 	 */
 	public static final String VERSION = "0.0.0.7";
 
-	private static final FPSLogger FPS_LOGGER = new FPSLogger();
+	// private static final FPSLogger FPS_LOGGER = new FPSLogger();
 
 	private static Tyr Instance = null;
 
@@ -63,13 +61,17 @@ public class Tyr extends Game {
 	public void create() {
 		Gdx.app.log(LOG_NAME, "Creating");
 
+		// Load all of the game assets here at the beginning
+		AssetHelper.loadAll();
+		AssetHelper.MANAGER.finishLoading();
+
 		if (GamePreferences.getInstance().isSkipIntro()) {
 			setScreen(new MenuScreen());
 		} else {
-			final SplashScreen trailer = new SplashScreen(2000, 2000,
-					new MenuScreen(), "texture/trailer-splash1.png");
-			final SplashScreen company = new SplashScreen(2000, 2000, trailer,
-					"texture/company-splash1.png");
+			final SplashScreen trailer = new SplashScreen(2, 2,
+					new MenuScreen(), AssetHelper.TRAILER_SPLASH1);
+			final SplashScreen company = new SplashScreen(2, 2, trailer,
+					AssetHelper.COMPANY_SPLASH1);
 			setScreen(company);
 		}
 
@@ -79,7 +81,9 @@ public class Tyr extends Game {
 	@Override
 	public void dispose() {
 		Gdx.app.log(LOG_NAME, "Disposing");
-		AudioHelper.stopMusic();
+
+		// Dispose of all of the game assets
+		AssetHelper.MANAGER.dispose();
 
 		super.dispose();
 		// TODO: Save game data.

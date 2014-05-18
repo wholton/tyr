@@ -2,29 +2,18 @@ package com.tyr.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.tyr.game.AssetHelper;
 
 public class GameScreen extends AbstractScreen {
-	private SpriteBatch batch;
+
 	private TextureAtlas textureAtlas;
 	private Animation animation;
 	private float elapsedTime = 0;
 
 	public GameScreen() {
-		batch = new SpriteBatch();
-		textureAtlas = new TextureAtlas(Gdx.files.internal("texture/frog.pack"));
+		textureAtlas = AssetHelper.MANAGER.get(AssetHelper.ATLAS);
 		animation = new Animation(1 / 10f, textureAtlas.getRegions());
-	}
-
-	@Override
-	public void dispose() {
-		batch.dispose();
-		textureAtlas.dispose();
-	}
-
-	@Override
-	public void pause() {
 	}
 
 	@Override
@@ -36,11 +25,4 @@ public class GameScreen extends AbstractScreen {
 		batch.end();
 	}
 
-	@Override
-	public void resize(int width, int height) {
-	}
-
-	@Override
-	public void resume() {
-	}
 }

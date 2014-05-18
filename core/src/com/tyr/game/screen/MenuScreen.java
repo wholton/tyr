@@ -8,7 +8,6 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -24,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.tyr.game.AssetHelper;
 import com.tyr.game.Tyr;
 import com.tyr.game.accessor.AbstractAccessor;
 import com.tyr.game.accessor.ActorAccessor;
@@ -46,12 +46,12 @@ public class MenuScreen extends AbstractScreen {
 	/**
 	 * The spacing between the heading the buttons.
 	 */
-	protected final float TITLE_SPACE = 60;
+	protected final float TITLE_SPACE = 64;
 
 	/**
 	 * The spacing between the buttons.
 	 */
-	protected final float BUTTON_SPACE = 20;
+	protected final float BUTTON_SPACE = 16;
 
 	/**
 	 * The table will hold all of the buttons and be placed on the stage. This
@@ -65,17 +65,6 @@ public class MenuScreen extends AbstractScreen {
 	protected Sprite background;
 
 	/**
-	 * The path to the image that will fill the background.
-	 */
-	protected static final String BACKGROUND_TEXTURE_PATH = "texture/main-menu-background1.png";
-
-	/**
-	 * The path the music track that will play. This will continue despite
-	 * screen switches. To stop the track call "Tyr.getInstance().stopMusic()".
-	 */
-	protected static final String MUSIC_PATH = "audio/track1.mp3";
-
-	/**
 	 * The font used by the heading.
 	 */
 	protected BitmapFont headingFont;
@@ -85,20 +74,17 @@ public class MenuScreen extends AbstractScreen {
 	 */
 	protected BitmapFont buttonFont;
 
+	private static final String FONT_PATH = "font/CRAYON__.TTF";
+
 	/**
 	 * The size of the heading font.
 	 */
-	protected static final int HEADING_FONT_SIZE = 80;
+	protected static final int HEADING_FONT_SIZE = 64;
 
 	/**
 	 * The size of the button font.
 	 */
-	protected static final int BUTTON_FONT_SIZE = 40;
-
-	/**
-	 * The path to the font used by the heading and buttons.
-	 */
-	protected static final String FONT_PATH = "font/CRAYON__.TTF";
+	protected static final int BUTTON_FONT_SIZE = 32;
 
 	/**
 	 * The button that will take the player to a new game.
@@ -130,8 +116,6 @@ public class MenuScreen extends AbstractScreen {
 	 */
 	protected final float fadeTime = .75f;
 
-	protected boolean disposed;
-
 	/**
 	 * Disables all buttons
 	 * 
@@ -148,10 +132,9 @@ public class MenuScreen extends AbstractScreen {
 
 	@Override
 	public void dispose() {
-		stage.dispose();
-		background.getTexture().dispose();
-		headingFont.dispose();
 		buttonFont.dispose();
+		headingFont.dispose();
+		stage.dispose();
 		super.dispose();
 	}
 
@@ -159,16 +142,14 @@ public class MenuScreen extends AbstractScreen {
 	public void render(final float delta) {
 		super.render(delta);
 
+		batch.begin();
+		background.draw(batch);
+		batch.end();
+
+		stage.act(delta);
+		stage.draw();
+
 		tweenManager.update(delta);
-
-		if (!disposed) {
-			batch.begin();
-			background.draw(batch);
-			batch.end();
-
-			stage.act(delta);
-			stage.draw();
-		}
 	}
 
 	@Override
@@ -183,14 +164,12 @@ public class MenuScreen extends AbstractScreen {
 	public void show() {
 		super.show();
 
-		disposed = false;
-
 		// Setup music
-		AudioHelper.playMusic(MUSIC_PATH, true, false);
+		AudioHelper.playMusic(AssetHelper.TRACK1, true, false);
 
 		// Setup background texture
-		background = new Sprite(new Texture(
-				Gdx.files.internal(BACKGROUND_TEXTURE_PATH)));
+		background = new Sprite(
+				AssetHelper.MANAGER.get(AssetHelper.MAIN_MENU_BACKGROUND1));
 		background.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		// Setup stage
@@ -233,7 +212,6 @@ public class MenuScreen extends AbstractScreen {
 					int pointer, int button) {
 				Tyr.getInstance().setScreen(new GameScreen());
 				AudioHelper.stopMusic();
-				disposed = true;
 				return true;
 			}
 		});
@@ -248,7 +226,6 @@ public class MenuScreen extends AbstractScreen {
 					int pointer, int button) {
 				Tyr.getInstance().setScreen(new GameScreen());
 				AudioHelper.stopMusic();
-				disposed = true;
 				return true;
 			}
 		});
@@ -256,13 +233,12 @@ public class MenuScreen extends AbstractScreen {
 		table.row();
 
 		// Setup options button
-		optionsButton = new TextButton("Option", style);
+		optionsButton = new TextButton("Options", style);
 		optionsButton.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				Tyr.getInstance().setScreen(new OptionsScreen());
-				disposed = true;
 				return true;
 			}
 		});
@@ -277,7 +253,6 @@ public class MenuScreen extends AbstractScreen {
 					int pointer, int button) {
 				Tyr.getInstance().setScreen(new EndScreen());
 				AudioHelper.stopMusic();
-				disposed = true;
 				return true;
 			}
 		});
@@ -326,5 +301,10 @@ public class MenuScreen extends AbstractScreen {
 				.push(Tween.to(exitButton, AbstractAccessor.ALPHA, fadeTime)
 						.target(ALPHA_OPAQUE)).end().setCallback(tweenCallback)
 				.start(tweenManager);
+
+		// This is to get rid of the flicker caused by drawing with the batch
+		// then
+		// updating the tween in render.
+		tweenManager.update(Float.MIN_VALUE);
 	}
 }

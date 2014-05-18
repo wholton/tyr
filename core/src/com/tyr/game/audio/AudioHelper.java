@@ -1,7 +1,8 @@
 package com.tyr.game.audio;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.audio.Music;
+import com.tyr.game.AssetHelper;
 import com.tyr.game.GamePreferences;
 
 public class AudioHelper {
@@ -10,7 +11,7 @@ public class AudioHelper {
 	 * Represents music that will play despite screens switching.
 	 */
 	private static Music music;
-	private static String musicPath;
+	private static AssetDescriptor<Music> musicDescriptor;
 
 	/**
 	 * Plays music that will continue between screens.
@@ -23,10 +24,11 @@ public class AudioHelper {
 	 *            Whether the music should restart if it was already playing the
 	 *            given track.
 	 */
-	public static void playMusic(final String musicPath, boolean looping,
-			boolean restart) {
+	public static void playMusic(final AssetDescriptor<Music> musicDescriptor,
+			boolean looping, boolean restart) {
 		if (music != null) {
-			if (musicPath.equals(AudioHelper.musicPath)) {
+			if (AudioHelper.musicDescriptor.fileName
+					.equals(musicDescriptor.fileName)) {
 				// if we're already playing this track, just update it.
 				if (restart) {
 					music.stop();
@@ -38,8 +40,8 @@ public class AudioHelper {
 			// if we're playing a different track, dispose of what's playing
 			stopMusic();
 		}
-		AudioHelper.musicPath = musicPath;
-		music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
+		AudioHelper.musicDescriptor = musicDescriptor;
+		music = AssetHelper.MANAGER.get(AssetHelper.TRACK1);
 		final GamePreferences preferences = GamePreferences.getInstance();
 		music.setVolume(preferences.getMasterVolume()
 				* preferences.getMusicVolume());
@@ -60,9 +62,8 @@ public class AudioHelper {
 	public static void stopMusic() {
 		if (music != null) {
 			music.stop();
-			music.dispose();
 			music = null;
-			musicPath = null;
+			musicDescriptor = null;
 		}
 	}
 
