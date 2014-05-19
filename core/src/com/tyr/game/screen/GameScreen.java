@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.tyr.game.AssetHelper;
 
 public class GameScreen extends AbstractScreen {
-
+	// TODO: a very rough class, just an example
 	private TextureAtlas textureAtlas;
 	private Animation animation;
 	private float elapsedTime = 0;

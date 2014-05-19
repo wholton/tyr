@@ -5,12 +5,22 @@ import com.badlogic.gdx.audio.Music;
 import com.tyr.game.AssetHelper;
 import com.tyr.game.GamePreferences;
 
+/**
+ * A helper class that allows for music to be displayed despite screens switching.
+ * 
+ * @author Bebop
+ * @version 0.0.3.0
+ */
 public class AudioHelper {
 
 	/**
 	 * Represents music that will play despite screens switching.
 	 */
 	private static Music music;
+	
+	/**
+	 * Represents the descriptor of the particular asset to be played which will be used to ask the asset manager for the concrete asset.
+	 */
 	private static AssetDescriptor<Music> musicDescriptor;
 
 	/**
@@ -29,7 +39,7 @@ public class AudioHelper {
 		if (music != null) {
 			if (AudioHelper.musicDescriptor.fileName
 					.equals(musicDescriptor.fileName)) {
-				// if we're already playing this track, just update it.
+				// if already playing this track, just update it.
 				if (restart) {
 					music.stop();
 					music.play();
@@ -37,7 +47,7 @@ public class AudioHelper {
 				music.setLooping(looping);
 				return;
 			}
-			// if we're playing a different track, dispose of what's playing
+			// if currently playing a different track, stop what's playing before switching
 			stopMusic();
 		}
 		AudioHelper.musicDescriptor = musicDescriptor;
@@ -49,6 +59,11 @@ public class AudioHelper {
 		music.setLooping(looping);
 	}
 
+	/**
+	 * Sets the volume of the currently playing song to the given value.
+	 * 
+	 * @param volume	the volume the music will be set to
+	 */
 	public static void setVolume(final float volume) {
 		if (music != null) {
 			music.setVolume(volume);

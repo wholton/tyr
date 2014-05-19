@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -30,10 +31,10 @@ import com.tyr.game.accessor.ActorAccessor;
 import com.tyr.game.audio.AudioHelper;
 
 /**
- * Allows the user to pick between multiple options.
+ * Allows the user to pick between multiple screens to transition to.
  * 
  * @author Bebop
- * 
+ * @version 0.0.3.0
  */
 public class MenuScreen extends AbstractScreen {
 
@@ -60,7 +61,7 @@ public class MenuScreen extends AbstractScreen {
 	protected Table table;
 
 	/**
-	 * The image that will fill the background. This must be disposed of.
+	 * The image that will fill the background.
 	 */
 	protected Sprite background;
 
@@ -74,6 +75,9 @@ public class MenuScreen extends AbstractScreen {
 	 */
 	protected BitmapFont buttonFont;
 
+	/**
+	 * The path to the font to be used by the heading and buttons.
+	 */
 	private static final String FONT_PATH = "font/CRAYON__.TTF";
 
 	/**
@@ -87,26 +91,6 @@ public class MenuScreen extends AbstractScreen {
 	protected static final int BUTTON_FONT_SIZE = 32;
 
 	/**
-	 * The button that will take the player to a new game.
-	 */
-	protected TextButton newGameButton;
-
-	/**
-	 * The button that will take the player to a previous game.
-	 */
-	protected TextButton continueButton;
-
-	/**
-	 * The button that will take the player to the options screen.
-	 */
-	protected TextButton optionsButton;
-
-	/**
-	 * The button that will exit the application.
-	 */
-	protected TextButton exitButton;
-
-	/**
 	 * This manager controls transition effects.
 	 */
 	protected TweenManager tweenManager;
@@ -117,21 +101,41 @@ public class MenuScreen extends AbstractScreen {
 	protected final float fadeTime = .75f;
 
 	/**
-	 * Disables all buttons
-	 * 
-	 * @param bool
-	 *            whether the buttons should be disabled or not
+	 * The button which transitions the player to a new game.
 	 */
-	protected void disableGameButtons(boolean bool) {
-		// newGameButton
-		// continueButton
-		// optionsButton
-		// exitButton
-		// TODO: Currently this does not work.
+	protected TextButton newGameButton;
+	
+	/**
+	 * The button which transitions the player to an old game.
+	 */
+	protected TextButton continueButton;
+	
+	/**
+	 * The button which transitions the player to the options screen.
+	 */
+	protected TextButton optionsButton;
+	
+	/**
+	 * The button which closes the application.
+	 */
+	protected TextButton exitButton;
+
+	/**
+	 * Sets whether or not each of the screen's buttons are touchable.
+	 * 
+	 * @param touchable	whether the button is touchable or not
+	 */
+	public void setButtonTouchables(Touchable touchable) {
+		newGameButton.setTouchable(touchable);
+		continueButton.setTouchable(touchable);
+		optionsButton.setTouchable(touchable);
+		exitButton.setTouchable(touchable);
 	}
 
 	@Override
 	public void dispose() {
+		// TODO: Put these into a skin so that we can pass this off to the asset
+		// manager.
 		buttonFont.dispose();
 		headingFont.dispose();
 		stage.dispose();
@@ -142,13 +146,16 @@ public class MenuScreen extends AbstractScreen {
 	public void render(final float delta) {
 		super.render(delta);
 
+		// Draw any sprites using the batch
 		batch.begin();
 		background.draw(batch);
 		batch.end();
 
+		// Update the stage using the delta and re-draw it
 		stage.act(delta);
 		stage.draw();
 
+		// Update the tween manager
 		tweenManager.update(delta);
 	}
 
@@ -156,8 +163,8 @@ public class MenuScreen extends AbstractScreen {
 	public void resize(final int width, final int height) {
 		super.resize(width, height);
 		stage.getViewport().update(width, height);
+		// Forces the table to be re-drawn
 		table.invalidateHierarchy();
-		table.setSize(width, height);
 	}
 
 	@Override
@@ -181,6 +188,7 @@ public class MenuScreen extends AbstractScreen {
 		// Setup table to align elements
 		table = new Table();
 		table.setFillParent(true);
+		stage.addActor(table);
 
 		// Setup font
 		final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
@@ -259,19 +267,18 @@ public class MenuScreen extends AbstractScreen {
 		table.add(exitButton).spaceBottom(BUTTON_SPACE);
 		table.row();
 
-		stage.addActor(table);
-
+		// Setup the tween effects
 		tweenManager = new TweenManager();
 		Tween.registerAccessor(Actor.class, new ActorAccessor());
 
-		// Start the game with the buttons disabled
-		disableGameButtons(true);
+		// Starts by disabling all buttons. A tween callback will be
+		// used to re-enable them at the end.
+		setButtonTouchables(Touchable.disabled);
 
-		// Setup a callback for when the sequence ends to enable buttons
-		TweenCallback tweenCallback = new TweenCallback() {
+		TweenCallback enableButtons = new TweenCallback() {
 			@Override
 			public void onEvent(int type, BaseTween<?> source) {
-				disableGameButtons(false);
+				setButtonTouchables(Touchable.enabled);
 			}
 		};
 
@@ -299,7 +306,7 @@ public class MenuScreen extends AbstractScreen {
 				.push(Tween.to(optionsButton, AbstractAccessor.ALPHA, fadeTime)
 						.target(ALPHA_OPAQUE))
 				.push(Tween.to(exitButton, AbstractAccessor.ALPHA, fadeTime)
-						.target(ALPHA_OPAQUE)).end().setCallback(tweenCallback)
+						.target(ALPHA_OPAQUE)).end().setCallback(enableButtons)
 				.start(tweenManager);
 
 		// This is to get rid of the flicker caused by drawing with the batch

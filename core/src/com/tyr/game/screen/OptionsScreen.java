@@ -25,6 +25,12 @@ import com.tyr.game.AssetHelper;
 import com.tyr.game.GamePreferences;
 import com.tyr.game.Tyr;
 
+/**
+ * Allows the player to set options pertaining to the game's video, audio, and play.
+ * 
+ * @author Bebop
+ * @version 0.0.3.0
+ */
 public class OptionsScreen extends AbstractScreen {
 
 	/**
@@ -37,25 +43,68 @@ public class OptionsScreen extends AbstractScreen {
 	 */
 	protected final float OPTION_SPACE = 16;
 
+	/**
+	 * The stage on which we will draw the table and its buttons. This must be
+	 * disposed of.
+	 */
 	private Stage stage;
+	
+	/**
+	 * The table will hold all of the buttons and be placed on the stage. This
+	 * will make it easier to align things.
+	 */
 	private Table table;
 
+	/**
+	 * The sprite that will fill the background.
+	 */
 	private Sprite background;
 
+	/**
+	 * The font used by the heading.
+	 */
+	protected BitmapFont headingFont;
+
+	/**
+	 * The font used by the buttons.
+	 */
+	protected BitmapFont buttonFont;
+
+	/**
+	 * The font used by the option labels.
+	 */
 	private BitmapFont optionFont;
-	private BitmapFont headingFont;
-	private BitmapFont buttonFont;
-	private static final int OPTION_FONT_SIZE = 32;
-	private static final int HEADING_FONT_SIZE = 64;
-	private static final int BUTTON_FONT_SIZE = 64;
+	
+	/**
+	 * The path to the font to be used by the heading and buttons.
+	 */
 	private static final String FONT_PATH = "font/CRAYON__.TTF";
 
+	/**
+	 * The size of the heading font.
+	 */
+	protected static final int HEADING_FONT_SIZE = 64;
+
+	/**
+	 * The size of the button font.
+	 */
+	protected static final int BUTTON_FONT_SIZE = 32;
+	
+	/**
+	 * The size of the option font.
+	 */
+	private static final int OPTION_FONT_SIZE = 32;
+
+	/**
+	 * The skin used by the option widgets.
+	 */
 	private Skin skin;
 
 	@Override
 	public void dispose() {
 		optionFont.dispose();
 		headingFont.dispose();
+		buttonFont.dispose();
 		stage.dispose();
 		super.dispose();
 	}
@@ -70,6 +119,13 @@ public class OptionsScreen extends AbstractScreen {
 
 		stage.act(delta);
 		stage.draw();
+	}
+
+	@Override
+	public void resize(final int width, final int height) {
+		super.resize(width, height);
+		stage.getViewport().update(width, height);
+		table.invalidateHierarchy();
 	}
 
 	@Override
@@ -89,6 +145,7 @@ public class OptionsScreen extends AbstractScreen {
 		// Setup table to align items
 		table = new Table();
 		table.setFillParent(true);
+		stage.addActor(table);
 
 		// Setup skin
 		skin = AssetHelper.MANAGER.get(AssetHelper.SKIN);
@@ -168,11 +225,11 @@ public class OptionsScreen extends AbstractScreen {
 		table.add(new Label("Fullscreen", optionLabelStyle))
 				.spaceBottom(OPTION_SPACE).spaceRight(OPTION_SPACE);
 		final CheckBox fullscreenCheckBox = new CheckBox("", skin);
-		fullscreenCheckBox.setChecked(gamePreferences.isWindowed());
+		fullscreenCheckBox.setChecked(gamePreferences.isFullscreen());
 		fullscreenCheckBox.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				gamePreferences.setWindowed(fullscreenCheckBox.isChecked());
+				gamePreferences.setFullscreen(fullscreenCheckBox.isChecked());
 			}
 		});
 		table.add(fullscreenCheckBox).spaceBottom(OPTION_SPACE);
@@ -232,8 +289,6 @@ public class OptionsScreen extends AbstractScreen {
 		});
 		table.add(cancelButton);
 		table.row();
-
-		stage.addActor(table);
 	}
 
 }

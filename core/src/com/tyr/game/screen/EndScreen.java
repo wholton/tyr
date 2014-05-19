@@ -12,7 +12,7 @@ import com.tyr.game.accessor.AbstractAccessor;
 import com.tyr.game.accessor.SpriteAccessor;
 
 public class EndScreen extends AbstractScreen {
-
+	// TODO: a very rough class, more of an example
 	/**
 	 * The image to be splashed at the end of the game.
 	 */

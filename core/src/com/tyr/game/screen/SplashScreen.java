@@ -20,11 +20,18 @@ import com.tyr.game.accessor.SpriteAccessor;
  * fading to a follow-up screen.
  * 
  * @author Bebop
- * 
+ * @version 0.0.3.0
  */
 public class SplashScreen extends AbstractScreen {
 
+	/**
+	 * The amount of time the splash texture will take to fade in to opaqueness and out to transparentness.
+	 */
 	private final float fadeTime;
+	
+	/**
+	 * The amount of time the splash texture will remain opaque before fading back out.
+	 */
 	private final float displayTime;
 
 	/**
@@ -37,6 +44,10 @@ public class SplashScreen extends AbstractScreen {
 	 * screen. Must dispose of the sprite's texture.
 	 */
 	private Sprite splash;
+	
+	/**
+	 * The description of the particular asset to be displayed as the splash texture. Will be used to query the asset manager for the concrete texture.
+	 */
 	private final AssetDescriptor<Texture> textureDescriptor;
 
 	/**
@@ -55,14 +66,21 @@ public class SplashScreen extends AbstractScreen {
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render(final float delta) {
 		super.render(delta);
 
+		// Draw any sprites using the sprite batch
 		batch.begin();
 		splash.draw(batch);
 		batch.end();
 
+		// Update the tween manager
 		tweenManager.update(delta);
+	}
+
+	@Override
+	public void resize(final int width, final int height) {
+		splash.setSize(width, height);
 	}
 
 	@Override
@@ -74,7 +92,6 @@ public class SplashScreen extends AbstractScreen {
 				+ " seconds");
 
 		splash = new Sprite(AssetHelper.MANAGER.get(textureDescriptor));
-		splash.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		// Registers TYR's SpriteAccessor class to handle the Sprite tweening
 		// effects.

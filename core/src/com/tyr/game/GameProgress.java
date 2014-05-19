@@ -1,6 +1,7 @@
 package com.tyr.game;
 
 public class GameProgress {
+	// TODO: Not currently using this, just a demo.
 
 	private static GameProgress Instance;
 

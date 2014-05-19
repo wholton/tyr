@@ -7,6 +7,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+/**
+ * A helper class which holds descriptors of all assets used by the game and manager for said assets.
+ * 
+ * @author Bebop
+ * @version 0.0.3.0
+ */
 public class AssetHelper {
 
 	public static final AssetManager MANAGER = new AssetManager();
@@ -39,6 +45,9 @@ public class AssetHelper {
 	public static final AssetDescriptor<TextureAtlas> ATLAS = new AssetDescriptor<TextureAtlas>(
 			"texture/frog.pack", TextureAtlas.class);
 
+	/**
+	 * Queues all of the game's assets to be loaded by the manager.
+	 */
 	@SuppressWarnings("rawtypes")
 	public static void loadAll() {
 		AssetDescriptor[] descriptors = { ATLAS, TRAILER_SPLASH1,

@@ -3,10 +3,15 @@ package com.tyr.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.tyr.game.screen.MenuScreen;
-import com.tyr.game.screen.SplashScreen;
+import com.tyr.game.screen.LoadingScreen;
 
-public class Tyr extends Game {
+/**
+ * The application listener for "Thank you, Robutcus". This is a singleton class.
+ * 
+ * @author Bebop
+ * @version 0.0.3.0
+ */
+public final class Tyr extends Game {
 
 	/**
 	 * The name this object will be registered as inside the logger.
@@ -41,9 +46,13 @@ public class Tyr extends Game {
 
 	// private static final FPSLogger FPS_LOGGER = new FPSLogger();
 
-	private static Tyr Instance = null;
+	/**
+	 * The singleton instance of the Tyr class.
+	 */
+	private static Tyr Instance;
 
-	public static Tyr getInstance() {
+	public static final Tyr getInstance() {
+		// Insures that there is only ever one intance of the Tyr class.
 		if (Instance == null) {
 			Instance = new Tyr();
 		}
@@ -57,23 +66,18 @@ public class Tyr extends Game {
 		super();
 	}
 
+	/**
+	 * Called directly after the constructor. Used to load prior game data and transition to the first screen.
+	 */
 	@Override
 	public void create() {
 		Gdx.app.log(LOG_NAME, "Creating");
 
-		// Load all of the game assets here at the beginning
-		AssetHelper.loadAll();
-		AssetHelper.MANAGER.finishLoading();
+		// Load the game preferences
+		GamePreferences.getInstance();
 
-		if (GamePreferences.getInstance().isSkipIntro()) {
-			setScreen(new MenuScreen());
-		} else {
-			final SplashScreen trailer = new SplashScreen(2, 2,
-					new MenuScreen(), AssetHelper.TRAILER_SPLASH1);
-			final SplashScreen company = new SplashScreen(2, 2, trailer,
-					AssetHelper.COMPANY_SPLASH1);
-			setScreen(company);
-		}
+		// Load the assets then transition to the first screen
+		setScreen(new LoadingScreen());
 
 		// TODO: Load game data.
 	}

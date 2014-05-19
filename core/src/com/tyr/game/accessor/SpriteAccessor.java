@@ -4,9 +4,26 @@ import aurelienribon.tweenengine.TweenAccessor;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+/**
+ * Represents an accessor for the Sprite class, which is used by the tween manager to 
+ * access and manipulate its variables. 
+ * 
+ * @author Bebop
+ * @version 0.0.3.0
+ */
 public class SpriteAccessor extends AbstractAccessor implements
 		TweenAccessor<Sprite> {
 
+	/**
+	 * Gets the values of the target corresponding to the given tween type and places them
+	 * within the return values array then returns the number of values retrieved.
+	 * 
+	 * @param target	the target of the tween which will supply the return values
+	 * @param tweenType	the type of tween to be performed which will decide which values are retrieved
+	 * @param returnValues	the set of values retrieved from the target decided by the tween type
+	 * 
+	 * @return	the number of values placed into the return value array
+	 */
 	@Override
 	public int getValues(Sprite target, int tweenType, float[] returnValues) {
 		switch (tweenType) {
@@ -26,6 +43,14 @@ public class SpriteAccessor extends AbstractAccessor implements
 		}
 	}
 
+	/**
+	 * Sets the values of the target corresponding to the given tween type to the values within the
+	 * new values array.
+	 * 
+	 * @param target	the target of the tween which will have its variables updated
+	 * @param tweenType	the type of tween to be performed which will decide which values are updated
+	 * @param returnValues	the set of values to be updated decided by the tween type
+	 */
 	@Override
 	public void setValues(Sprite target, int tweenType, float[] newValues) {
 		switch (tweenType) {
