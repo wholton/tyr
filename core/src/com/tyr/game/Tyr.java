@@ -6,7 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.tyr.game.screen.LoadingScreen;
 
 /**
- * The application listener for "Thank you, Robutcus". This is a singleton class.
+ * The application listener for "Thank you, Robutcus". This is a singleton
+ * class.
  * 
  * @author Bebop
  * @version 0.0.3.0
@@ -67,7 +68,8 @@ public final class Tyr extends Game {
 	}
 
 	/**
-	 * Called directly after the constructor. Used to load prior game data and transition to the first screen.
+	 * Called directly after the constructor. Used to load prior game data and
+	 * transition to the first screen.
 	 */
 	@Override
 	public void create() {

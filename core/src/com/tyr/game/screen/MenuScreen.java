@@ -45,16 +45,6 @@ public class MenuScreen extends AbstractScreen {
 	protected Stage stage;
 
 	/**
-	 * The spacing between the heading the buttons.
-	 */
-	protected final float TITLE_SPACE = 64;
-
-	/**
-	 * The spacing between the buttons.
-	 */
-	protected final float BUTTON_SPACE = 16;
-
-	/**
 	 * The table will hold all of the buttons and be placed on the stage. This
 	 * will make it easier to align things.
 	 */
@@ -64,6 +54,11 @@ public class MenuScreen extends AbstractScreen {
 	 * The image that will fill the background.
 	 */
 	protected Sprite background;
+
+	/**
+	 * This manager controls transition effects.
+	 */
+	protected TweenManager tweenManager;
 
 	/**
 	 * The font used by the heading.
@@ -91,46 +86,19 @@ public class MenuScreen extends AbstractScreen {
 	protected static final int BUTTON_FONT_SIZE = 32;
 
 	/**
-	 * This manager controls transition effects.
-	 */
-	protected TweenManager tweenManager;
-
-	/**
 	 * The time it takes for the transitions to complete.
 	 */
-	protected final float fadeTime = .75f;
+	protected static final float FADE_TIME = .75f;
 
 	/**
-	 * The button which transitions the player to a new game.
+	 * The spacing between the heading the buttons.
 	 */
-	protected TextButton newGameButton;
-	
-	/**
-	 * The button which transitions the player to an old game.
-	 */
-	protected TextButton continueButton;
-	
-	/**
-	 * The button which transitions the player to the options screen.
-	 */
-	protected TextButton optionsButton;
-	
-	/**
-	 * The button which closes the application.
-	 */
-	protected TextButton exitButton;
+	protected static final float TITLE_SPACE = 64;
 
 	/**
-	 * Sets whether or not each of the screen's buttons are touchable.
-	 * 
-	 * @param touchable	whether the button is touchable or not
+	 * The spacing between the buttons.
 	 */
-	public void setButtonTouchables(Touchable touchable) {
-		newGameButton.setTouchable(touchable);
-		continueButton.setTouchable(touchable);
-		optionsButton.setTouchable(touchable);
-		exitButton.setTouchable(touchable);
-	}
+	protected static final float BUTTON_SPACE = 16;
 
 	@Override
 	public void dispose() {
@@ -213,7 +181,7 @@ public class MenuScreen extends AbstractScreen {
 		table.row();
 
 		// Setup new game button
-		newGameButton = new TextButton("New Game", style);
+		final TextButton newGameButton = new TextButton("New Game", style);
 		newGameButton.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -227,7 +195,7 @@ public class MenuScreen extends AbstractScreen {
 		table.row();
 
 		// Setup continue game button
-		continueButton = new TextButton("Continue", style);
+		final TextButton continueButton = new TextButton("Continue", style);
 		continueButton.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -241,7 +209,7 @@ public class MenuScreen extends AbstractScreen {
 		table.row();
 
 		// Setup options button
-		optionsButton = new TextButton("Options", style);
+		final TextButton optionsButton = new TextButton("Options", style);
 		optionsButton.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -254,7 +222,7 @@ public class MenuScreen extends AbstractScreen {
 		table.row();
 
 		// Setup exit button
-		exitButton = new TextButton("Exit", style);
+		final TextButton exitButton = new TextButton("Exit", style);
 		exitButton.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -273,12 +241,12 @@ public class MenuScreen extends AbstractScreen {
 
 		// Starts by disabling all buttons. A tween callback will be
 		// used to re-enable them at the end.
-		setButtonTouchables(Touchable.disabled);
+		table.setTouchable(Touchable.disabled);
 
 		TweenCallback enableButtons = new TweenCallback() {
 			@Override
 			public void onEvent(int type, BaseTween<?> source) {
-				setButtonTouchables(Touchable.enabled);
+				table.setTouchable(Touchable.enabled);
 			}
 		};
 
@@ -296,16 +264,17 @@ public class MenuScreen extends AbstractScreen {
 						ALPHA_TRANSPARENT))
 				.push(Tween.set(exitButton, AbstractAccessor.ALPHA).target(
 						ALPHA_TRANSPARENT))
-				.push(Tween.from(heading, AbstractAccessor.ALPHA, fadeTime)
+				.push(Tween.from(heading, AbstractAccessor.ALPHA, FADE_TIME)
 						.target(ALPHA_TRANSPARENT))
-				.push(Tween.to(newGameButton, AbstractAccessor.ALPHA, fadeTime)
-						.target(ALPHA_OPAQUE))
 				.push(Tween
-						.to(continueButton, AbstractAccessor.ALPHA, fadeTime)
+						.to(newGameButton, AbstractAccessor.ALPHA, FADE_TIME)
 						.target(ALPHA_OPAQUE))
-				.push(Tween.to(optionsButton, AbstractAccessor.ALPHA, fadeTime)
+				.push(Tween.to(continueButton, AbstractAccessor.ALPHA,
+						FADE_TIME).target(ALPHA_OPAQUE))
+				.push(Tween
+						.to(optionsButton, AbstractAccessor.ALPHA, FADE_TIME)
 						.target(ALPHA_OPAQUE))
-				.push(Tween.to(exitButton, AbstractAccessor.ALPHA, fadeTime)
+				.push(Tween.to(exitButton, AbstractAccessor.ALPHA, FADE_TIME)
 						.target(ALPHA_OPAQUE)).end().setCallback(enableButtons)
 				.start(tweenManager);
 

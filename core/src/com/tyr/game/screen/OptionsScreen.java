@@ -26,7 +26,8 @@ import com.tyr.game.GamePreferences;
 import com.tyr.game.Tyr;
 
 /**
- * Allows the player to set options pertaining to the game's video, audio, and play.
+ * Allows the player to set options pertaining to the game's video, audio, and
+ * play.
  * 
  * @author Bebop
  * @version 0.0.3.0
@@ -34,31 +35,21 @@ import com.tyr.game.Tyr;
 public class OptionsScreen extends AbstractScreen {
 
 	/**
-	 * The spacing between the heading the options.
-	 */
-	protected final float TITLE_SPACE = 64;
-
-	/**
-	 * The spacing between the options.
-	 */
-	protected final float OPTION_SPACE = 16;
-
-	/**
 	 * The stage on which we will draw the table and its buttons. This must be
 	 * disposed of.
 	 */
-	private Stage stage;
-	
+	protected Stage stage;
+
 	/**
 	 * The table will hold all of the buttons and be placed on the stage. This
 	 * will make it easier to align things.
 	 */
-	private Table table;
+	protected Table table;
 
 	/**
 	 * The sprite that will fill the background.
 	 */
-	private Sprite background;
+	protected Sprite background;
 
 	/**
 	 * The font used by the heading.
@@ -74,7 +65,7 @@ public class OptionsScreen extends AbstractScreen {
 	 * The font used by the option labels.
 	 */
 	private BitmapFont optionFont;
-	
+
 	/**
 	 * The path to the font to be used by the heading and buttons.
 	 */
@@ -89,16 +80,21 @@ public class OptionsScreen extends AbstractScreen {
 	 * The size of the button font.
 	 */
 	protected static final int BUTTON_FONT_SIZE = 32;
-	
+
 	/**
 	 * The size of the option font.
 	 */
 	private static final int OPTION_FONT_SIZE = 32;
 
 	/**
-	 * The skin used by the option widgets.
+	 * The spacing between the heading the options.
 	 */
-	private Skin skin;
+	protected static final float TITLE_SPACE = 64;
+
+	/**
+	 * The spacing between the options.
+	 */
+	protected static final float OPTION_SPACE = 16;
 
 	@Override
 	public void dispose() {
@@ -148,7 +144,8 @@ public class OptionsScreen extends AbstractScreen {
 		stage.addActor(table);
 
 		// Setup skin
-		skin = AssetHelper.MANAGER.get(AssetHelper.SKIN);
+		final Skin widgetSkin = AssetHelper.MANAGER
+				.get(AssetHelper.WIDGET_SKIN);
 
 		// Setup fonts
 		final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
@@ -182,7 +179,8 @@ public class OptionsScreen extends AbstractScreen {
 		// Setup master volume option
 		table.add(new Label("Master Volume", optionLabelStyle))
 				.spaceBottom(OPTION_SPACE).spaceRight(OPTION_SPACE);
-		final Slider masterVolumeSlider = new Slider(0, 1, .01f, false, skin);
+		final Slider masterVolumeSlider = new Slider(0, 1, .01f, false,
+				widgetSkin);
 		masterVolumeSlider.setValue(gamePreferences.getMasterVolume());
 		masterVolumeSlider.addListener(new ChangeListener() {
 			@Override
@@ -196,7 +194,8 @@ public class OptionsScreen extends AbstractScreen {
 		// Setup sound volume option
 		table.add(new Label("Sound Effect Volume", optionLabelStyle))
 				.spaceBottom(OPTION_SPACE).spaceRight(OPTION_SPACE);
-		final Slider soundVolumeSlider = new Slider(0, 1, .01f, false, skin);
+		final Slider soundVolumeSlider = new Slider(0, 1, .01f, false,
+				widgetSkin);
 		soundVolumeSlider.setValue(gamePreferences.getSoundVolume());
 		soundVolumeSlider.addListener(new ChangeListener() {
 			@Override
@@ -210,7 +209,8 @@ public class OptionsScreen extends AbstractScreen {
 		// Setup music volume option
 		table.add(new Label("Music Volume", optionLabelStyle))
 				.spaceBottom(OPTION_SPACE).spaceRight(OPTION_SPACE);
-		final Slider musicVolumeSlider = new Slider(0, 1, .01f, false, skin);
+		final Slider musicVolumeSlider = new Slider(0, 1, .01f, false,
+				widgetSkin);
 		musicVolumeSlider.setValue(gamePreferences.getMusicVolume());
 		musicVolumeSlider.addListener(new ChangeListener() {
 			@Override
@@ -224,7 +224,7 @@ public class OptionsScreen extends AbstractScreen {
 		// Setup fullscreen option
 		table.add(new Label("Fullscreen", optionLabelStyle))
 				.spaceBottom(OPTION_SPACE).spaceRight(OPTION_SPACE);
-		final CheckBox fullscreenCheckBox = new CheckBox("", skin);
+		final CheckBox fullscreenCheckBox = new CheckBox("", widgetSkin);
 		fullscreenCheckBox.setChecked(gamePreferences.isFullscreen());
 		fullscreenCheckBox.addListener(new ChangeListener() {
 			@Override
@@ -238,7 +238,7 @@ public class OptionsScreen extends AbstractScreen {
 		// Setup vsync option
 		table.add(new Label("VSync", optionLabelStyle))
 				.spaceBottom(OPTION_SPACE).spaceRight(OPTION_SPACE);
-		final CheckBox vsyncCheckBox = new CheckBox("", skin);
+		final CheckBox vsyncCheckBox = new CheckBox("", widgetSkin);
 		vsyncCheckBox.setChecked(gamePreferences.isVSync());
 		vsyncCheckBox.addListener(new ChangeListener() {
 			@Override
@@ -252,7 +252,7 @@ public class OptionsScreen extends AbstractScreen {
 		// Setup intro option
 		table.add(new Label("Skip Intro", optionLabelStyle))
 				.spaceBottom(TITLE_SPACE).spaceRight(OPTION_SPACE);
-		final CheckBox introCheckBox = new CheckBox("", skin);
+		final CheckBox introCheckBox = new CheckBox("", widgetSkin);
 		introCheckBox.setChecked(gamePreferences.isSkipIntro());
 		introCheckBox.addListener(new ChangeListener() {
 			@Override

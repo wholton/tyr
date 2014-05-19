@@ -25,12 +25,14 @@ import com.tyr.game.accessor.SpriteAccessor;
 public class SplashScreen extends AbstractScreen {
 
 	/**
-	 * The amount of time the splash texture will take to fade in to opaqueness and out to transparentness.
+	 * The amount of time the splash texture will take to fade in to opaqueness
+	 * and out to transparentness.
 	 */
 	private final float fadeTime;
-	
+
 	/**
-	 * The amount of time the splash texture will remain opaque before fading back out.
+	 * The amount of time the splash texture will remain opaque before fading
+	 * back out.
 	 */
 	private final float displayTime;
 
@@ -44,9 +46,11 @@ public class SplashScreen extends AbstractScreen {
 	 * screen. Must dispose of the sprite's texture.
 	 */
 	private Sprite splash;
-	
+
 	/**
-	 * The description of the particular asset to be displayed as the splash texture. Will be used to query the asset manager for the concrete texture.
+	 * The description of the particular asset to be displayed as the splash
+	 * texture. Will be used to query the asset manager for the concrete
+	 * texture.
 	 */
 	private final AssetDescriptor<Texture> textureDescriptor;
 

@@ -6,7 +6,8 @@ import com.tyr.game.AssetHelper;
 import com.tyr.game.GamePreferences;
 
 /**
- * A helper class that allows for music to be displayed despite screens switching.
+ * A helper class that allows for music to be displayed despite screens
+ * switching.
  * 
  * @author Bebop
  * @version 0.0.3.0
@@ -17,9 +18,10 @@ public class AudioHelper {
 	 * Represents music that will play despite screens switching.
 	 */
 	private static Music music;
-	
+
 	/**
-	 * Represents the descriptor of the particular asset to be played which will be used to ask the asset manager for the concrete asset.
+	 * Represents the descriptor of the particular asset to be played which will
+	 * be used to ask the asset manager for the concrete asset.
 	 */
 	private static AssetDescriptor<Music> musicDescriptor;
 
@@ -47,7 +49,8 @@ public class AudioHelper {
 				music.setLooping(looping);
 				return;
 			}
-			// if currently playing a different track, stop what's playing before switching
+			// if currently playing a different track, stop what's playing
+			// before switching
 			stopMusic();
 		}
 		AudioHelper.musicDescriptor = musicDescriptor;
@@ -62,7 +65,8 @@ public class AudioHelper {
 	/**
 	 * Sets the volume of the currently playing song to the given value.
 	 * 
-	 * @param volume	the volume the music will be set to
+	 * @param volume
+	 *            the volume the music will be set to
 	 */
 	public static void setVolume(final float volume) {
 		if (music != null) {

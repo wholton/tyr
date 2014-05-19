@@ -2,6 +2,7 @@ package com.tyr.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -19,12 +20,14 @@ public abstract class AbstractScreen implements Screen {
 	protected final String logName;
 
 	/**
-	 * The width of the screen (from Gdx.graphics) at the time this screen was created.
+	 * The width of the screen (from Gdx.graphics) at the time this screen was
+	 * created.
 	 */
 	protected static final int SCREEN_WIDTH = Gdx.graphics.getWidth();
-	
+
 	/**
-	 * The height of the screen (from Gdx.graphics) at the time this screen was created.
+	 * The height of the screen (from Gdx.graphics) at the time this screen was
+	 * created.
 	 */
 	protected static final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
@@ -32,14 +35,15 @@ public abstract class AbstractScreen implements Screen {
 	 * The alpha value corresponding to opaqueness.
 	 */
 	public static final float ALPHA_OPAQUE = 1;
-	
+
 	/**
 	 * The alpha value corresponding to transparentness.
 	 */
 	public static final float ALPHA_TRANSPARENT = 0;
 
 	/**
-	 * The sprite batch that every screen uses to draw textures to the screen without needing a stage. This must be disposed of.
+	 * The sprite batch that every screen uses to draw textures to the screen
+	 * without needing a stage. This must be disposed of.
 	 */
 	protected SpriteBatch batch;
 
@@ -58,7 +62,8 @@ public abstract class AbstractScreen implements Screen {
 	}
 
 	/**
-	 * Hide is called as a screen gets replaced by another, thus it is used to call the dispose method.
+	 * Hide is called as a screen gets replaced by another, thus it is used to
+	 * call the dispose method.
 	 */
 	@Override
 	public void hide() {
@@ -75,12 +80,14 @@ public abstract class AbstractScreen implements Screen {
 	}
 
 	/**
-	 * Called every time the screen is to be rendered to the screen and acts as the "game loop". Sets up the screen to be drawn to by clearing it to black and opaque (0, 0, 0, 1) and clearing the buffer.
+	 * Called every time the screen is to be rendered to the screen and acts as
+	 * the "game loop". Sets up the screen to be drawn to by clearing it to
+	 * black and opaque (0, 0, 0, 1) and clearing the buffer.
 	 */
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	}
 
 	/**
@@ -100,7 +107,8 @@ public abstract class AbstractScreen implements Screen {
 	}
 
 	/**
-	 * Called directly before the screen is to be rendered. Sets up the sprite batch to be used during the rendering phase.
+	 * Called directly before the screen is to be rendered. Sets up the sprite
+	 * batch to be used during the rendering phase.
 	 */
 	@Override
 	public void show() {

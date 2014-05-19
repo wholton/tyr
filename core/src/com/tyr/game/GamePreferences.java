@@ -6,7 +6,8 @@ import com.badlogic.gdx.Preferences;
 import com.tyr.game.audio.AudioHelper;
 
 /**
- * Represents the player's game preferences as decided by the options screen. This is a singleton class.
+ * Represents the player's game preferences as decided by the options screen.
+ * This is a singleton class.
  * 
  * @author Bebop
  * @version 0.0.3.0
@@ -14,7 +15,8 @@ import com.tyr.game.audio.AudioHelper;
 public class GamePreferences {
 
 	/**
-	 * The name of the Preferences file, which (on Windows) may be found in "C:/Users/<USER>/.prefs".
+	 * The name of the Preferences file, which (on Windows) may be found in
+	 * "C:/Users/<USER>/.prefs".
 	 */
 	private static final String PREFERENCES_NAME = "Tyr.Preferences";
 
@@ -22,7 +24,7 @@ public class GamePreferences {
 	 * The volume of the game's music.
 	 */
 	private float musicVolume;
-	
+
 	/**
 	 * The name of the music volume attribute within the preferences file.
 	 */
@@ -32,17 +34,18 @@ public class GamePreferences {
 	 * The volume of the game's sound effects.
 	 */
 	private float soundVolume;
-	
+
 	/**
 	 * The name of the sound volume attribute within the preferences file.
 	 */
 	private static final String SOUND_VOLUME_PREFERENCES_NAME = "SOUNDVOLUME";
 
 	/**
-	 * The overall volume of the game, which will be multiplied by any sub-volumes to determine their final volume.
+	 * The overall volume of the game, which will be multiplied by any
+	 * sub-volumes to determine their final volume.
 	 */
 	private float masterVolume;
-	
+
 	/**
 	 * The name of the master volume attribute within the preferences file.
 	 */
@@ -52,7 +55,7 @@ public class GamePreferences {
 	 * Whether or not VSync will be used by the application.
 	 */
 	private boolean vsync;
-	
+
 	/**
 	 * The name of the VSync attribute within the preferences file.
 	 */
@@ -62,7 +65,7 @@ public class GamePreferences {
 	 * Whether or not the application will be fullscreen.
 	 */
 	private boolean fullscreen;
-	
+
 	/**
 	 * The name of the fullscreen attribute within the preferences file.
 	 */
@@ -72,7 +75,7 @@ public class GamePreferences {
 	 * Whether or not the intro will be skipped.
 	 */
 	private boolean skipIntro;
-	
+
 	/**
 	 * The name of the skip intro attribute within the preferences file.
 	 */
@@ -141,7 +144,8 @@ public class GamePreferences {
 	}
 
 	/**
-	 * Loads the game preferences data from the preferences file and applies their effects.
+	 * Loads the game preferences data from the preferences file and applies
+	 * their effects.
 	 */
 	public void loadData() {
 		Preferences preferences = Gdx.app.getPreferences(PREFERENCES_NAME);
@@ -158,7 +162,8 @@ public class GamePreferences {
 	}
 
 	/**
-	 * Saves the game preferences data from the preferences file and applies their effects.
+	 * Saves the game preferences data from the preferences file and applies
+	 * their effects.
 	 */
 	public void saveData() {
 		Preferences prefs = Gdx.app.getPreferences(PREFERENCES_NAME);

@@ -1,8 +1,8 @@
 package com.tyr.game.accessor;
 
 /**
- * Represents an abstract form of an accessor, which is used by the tween manager to 
- * access and manipulate its concrete forms. 
+ * Represents an abstract form of an accessor, which is used by the tween
+ * manager to access and manipulate its concrete forms.
  * 
  * @author Bebop
  * @version 0.0.3.0
@@ -10,20 +10,23 @@ package com.tyr.game.accessor;
 public abstract class AbstractAccessor {
 
 	/**
-	 * The error message to be displayed when a particular tween type does not exist.
+	 * The error message to be displayed when a particular tween type does not
+	 * exist.
 	 */
 	public static final String ERROR_MESSAGE_TWEEN_TYPE = "Unknown tweenType.";
 
 	/**
-	 * Represents an enumeration of the tween type corresponding to the alpha value.
+	 * Represents an enumeration of the tween type corresponding to the alpha
+	 * value.
 	 */
 	public static final int ALPHA = 0;
-	
+
 	/**
-	 * Represents an enumeration of the tween type corresponding to the red, green, and blue values.
+	 * Represents an enumeration of the tween type corresponding to the red,
+	 * green, and blue values.
 	 */
 	public static final int RGB = 1;
-	
+
 	/**
 	 * Represents an enumeration of the tween type corresponding to the Y value.
 	 */

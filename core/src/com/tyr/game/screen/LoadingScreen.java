@@ -7,7 +7,8 @@ import com.tyr.game.Tyr;
 
 public class LoadingScreen extends AbstractScreen {
 	// TODO: This currently does nothing but passes things on, so it's just a
-	// demo of how a loading screen might be implemeneted (by adding to the render method
+	// demo of how a loading screen might be implemeneted (by adding to the
+	// render method
 	// and checking MANAGER.getProgress() for the loading bar or whatever
 
 	public static final AssetManager MANAGER = AssetHelper.MANAGER;
@@ -24,7 +25,7 @@ public class LoadingScreen extends AbstractScreen {
 		super.show();
 		AssetHelper.loadAll();
 	}
-	
+
 	public void transitionScreen() {
 		if (GamePreferences.getInstance().isSkipIntro()) {
 			Tyr.getInstance().setScreen(new MenuScreen());
