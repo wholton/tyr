@@ -2,8 +2,8 @@ package com.tyr.game.audio;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.audio.Music;
-import com.tyr.game.AssetHelper;
-import com.tyr.game.GamePreferences;
+import com.tyr.game.asset.AssetHelper;
+import com.tyr.game.data.GamePreferences;
 
 /**
  * A helper class that allows for music to be displayed despite screens

@@ -10,10 +10,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.tyr.game.AssetHelper;
 import com.tyr.game.Tyr;
 import com.tyr.game.accessor.AbstractAccessor;
 import com.tyr.game.accessor.SpriteAccessor;
+import com.tyr.game.asset.AssetHelper;
 
 /**
  * Displays a full-screen texture for a particular duration of time before

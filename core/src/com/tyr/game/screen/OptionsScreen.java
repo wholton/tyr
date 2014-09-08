@@ -21,9 +21,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.tyr.game.AssetHelper;
-import com.tyr.game.GamePreferences;
 import com.tyr.game.Tyr;
+import com.tyr.game.asset.AssetHelper;
+import com.tyr.game.data.GamePreferences;
 
 /**
  * Allows the player to set options pertaining to the game's video, audio, and

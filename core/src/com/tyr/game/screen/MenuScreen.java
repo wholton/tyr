@@ -24,10 +24,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.tyr.game.AssetHelper;
 import com.tyr.game.Tyr;
+import com.tyr.game.WIP.EndScreen;
+import com.tyr.game.WIP.GameScreen;
 import com.tyr.game.accessor.AbstractAccessor;
 import com.tyr.game.accessor.ActorAccessor;
+import com.tyr.game.asset.AssetHelper;
 import com.tyr.game.audio.AudioHelper;
 
 /**

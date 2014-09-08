@@ -3,7 +3,9 @@ package com.tyr.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.tyr.game.screen.LoadingScreen;
+import com.tyr.game.WIP.LoadingScreen;
+import com.tyr.game.asset.AssetHelper;
+import com.tyr.game.data.GamePreferences;
 
 /**
  * The application listener for "Thank you, Robutcus". This is a singleton
